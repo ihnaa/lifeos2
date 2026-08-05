@@ -9,23 +9,25 @@
 
         :root {
             --bg-gradient: linear-gradient(135deg, #FFF6FB 0%, #F3E8FF 50%, #EAF7FF 100%);
-            --card-bg: rgba(255, 255, 255, 0.8);
+            --card-bg: rgba(255, 255, 255, 0.85);
             --accent-color: #d46fb8;
             --text-color: #444;
             --border-color: #ffd7ee;
+            --section-bg: rgba(255, 255, 255, 0.5);
             --btn-grad: linear-gradient(90deg, #ffb6d9, #cdb4ff);
         }
 
         .dark-mode {
             --bg-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            --card-bg: rgba(30, 30, 60, 0.9);
+            --card-bg: rgba(25, 25, 45, 0.95);
             --accent-color: #ff9de2;
-            --text-color: #f0f0f0;
+            --text-color: #ffffff;
             --border-color: #4a3f52;
+            --section-bg: rgba(255, 255, 255, 0.1);
             --btn-grad: linear-gradient(90deg, #6a11cb, #2575fc);
         }
 
-        /* --- MAGIC STAR CURSOR --- */
+        /* --- STAR CURSOR --- */
         * { 
             margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; 
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23ffd54f" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>'), auto !important;
@@ -39,87 +41,80 @@
             background: var(--bg-gradient);
             background-attachment: fixed;
             min-height: 100vh;
-            padding: 20px;
+            padding: 30px;
             color: var(--text-color);
             transition: 0.5s ease all;
         }
 
-        h1 { text-align: center; font-size: 40px; color: var(--accent-color); text-shadow: 2px 2px white; margin-bottom: 20px; }
+        h1 { text-align: center; font-size: 45px; color: var(--accent-color); text-shadow: 2px 2px rgba(255,255,255,0.5); margin-bottom: 25px; }
 
         /* --- 3 COLUMN LAYOUT --- */
         .container { 
             display: grid; 
             grid-template-columns: 1fr 1.5fr 1fr; 
-            gap: 20px; 
-            max-width: 1500px;
+            gap: 25px; 
+            max-width: 1600px;
             margin: 0 auto;
         }
 
-        @media (max-width: 1100px) {
-            .container { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 1100px) { .container { grid-template-columns: 1fr; } }
 
         .card {
             background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
-            padding: 20px;
+            backdrop-filter: blur(15px);
+            border-radius: 40px;
+            padding: 25px;
             border: 2px solid var(--border-color);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            height: 100%;
-        }
-
-        /* --- VITALITY HUB STYLING --- */
-        .vitality-sections {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             display: flex;
             flex-direction: column;
-            gap: 20px;
-        }
-
-        .mana-section { background: rgba(255,255,255,0.4); padding: 15px; border-radius: 20px; }
-        .dark-mode .mana-section { background: rgba(0,0,0,0.2); }
-
-        .mana-progress { width: 100%; height: 18px; background: #eee; border-radius: 50px; overflow: hidden; margin: 10px 0; }
-        .mana-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #b4e4ff, #81d4fa); transition: 0.5s; }
-
-        .mood-moon-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
             gap: 15px;
         }
 
-        .mood-box, .moon-box {
-            background: rgba(255,255,255,0.4); padding: 15px; border-radius: 20px; text-align: center;
-        }
-        .dark-mode .mood-box, .dark-mode .moon-box { background: rgba(0,0,0,0.2); }
-
-        .gem-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-        .gem-unit { display: flex; flex-direction: column; align-items: center; font-size: 0.7rem; font-weight: bold; }
-        .gem { width: 35px; height: 35px; border-radius: 50% 50% 15% 15%; border: 2px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
-        .gem.selected { border: 3px solid gold; transform: scale(1.1); box-shadow: 0 0 10px gold; }
-
-        .quote-box {
-            text-align: center; font-style: italic; color: #a67dc2; padding: 10px; font-weight: bold; border-top: 1px dashed var(--border-color);
+        /* --- SECTION BOXES --- */
+        .magical-box {
+            background: var(--section-bg);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 25px;
         }
 
-        /* --- LISTS & UI --- */
+        /* --- VITALITY HUB: BIGGER GEMS & MOON --- */
+        .vitality-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .moon-display { text-align: center; }
+        #moon-icon { font-size: 60px; display: block; margin-bottom: 5px; filter: drop-shadow(0 0 10px gold); }
+
+        .gem-row { display: flex; justify-content: center; gap: 12px; margin-top: 10px; }
+        .gem-unit { display: flex; flex-direction: column; align-items: center; font-size: 0.8rem; font-weight: bold; color: var(--accent-color); }
+        .gem { width: 50px; height: 50px; border-radius: 50% 50% 15% 15%; border: 3px solid white; box-shadow: 0 5px 10px rgba(0,0,0,0.1); transition: 0.3s; }
+        .gem.selected { border: 4px solid gold; transform: scale(1.1); box-shadow: 0 0 20px gold; }
+
+        .quote-box { text-align: center; font-style: italic; color: var(--accent-color); font-weight: bold; padding-top: 10px; border-top: 1px dashed var(--border-color); }
+
+        /* --- UI ELEMENTS --- */
         .item-row {
-            background: rgba(255,255,255,0.5); padding: 10px 15px; border-radius: 15px; margin-bottom: 8px;
-            display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--accent-color);
+            background: var(--card-bg); padding: 12px 18px; border-radius: 20px; margin-bottom: 10px;
+            display: flex; justify-content: space-between; align-items: center; border-left: 8px solid var(--accent-color);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05); color: var(--text-color);
         }
-        .dark-mode .item-row { background: rgba(0,0,0,0.2); }
 
         button {
-            padding: 10px 18px; border: none; border-radius: 50px; 
+            padding: 12px 20px; border: none; border-radius: 50px; 
             color: white; background: var(--btn-grad); font-weight: bold; transition: 0.3s;
         }
         button:hover { transform: scale(1.05); filter: brightness(1.1); }
 
-        input, select { padding: 10px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 8px; width: 100%; outline: none;}
+        input, select { padding: 12px; border-radius: 15px; border: 1px solid var(--border-color); width: 100%; outline: none; background: var(--card-bg); color: var(--text-color);}
 
-        .timer { font-size: 50px; text-align: center; color: var(--accent-color); font-weight: bold; }
+        .timer { font-size: 60px; text-align: center; color: var(--accent-color); font-weight: bold; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        #rank-badge { display: inline-block; padding: 10px 25px; border-radius: 50px; font-weight: bold; color: white; margin-top: 15px; }
 
-        #rank-badge { display: inline-block; padding: 8px 20px; border-radius: 50px; font-weight: bold; color: white; margin-top: 10px; }
+        /* --- ALERT --- */
+        #alert-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(45deg, #ff9de2, #cdb4ff, #ffd56f);
+            z-index: 10000; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white;
+        }
     </style>
 </head>
 <body oninput="saveData()">
@@ -130,67 +125,77 @@
 
         <!-- ROW 1, LEFT: MEETINGS -->
         <div class="card">
-            <h2>📅 Meetings</h2>
-            <input type="text" id="mtgTitle" placeholder="Meeting Purpose...">
-            <input type="date" id="mtgDate">
-            <input type="time" id="mtgTime">
-            <button onclick="addMeeting()" style="width:100%;">🎀 Schedule</button>
-            <div id="meeting-list" style="margin-top:15px;"></div>
+            <h2>📅 Crystal Meetings</h2>
+            <div class="magical-box">
+                <input type="text" id="mtgTitle" placeholder="Meeting Purpose...">
+                <div style="display:flex; gap:10px; margin-top:10px;">
+                    <input type="date" id="mtgDate">
+                    <input type="time" id="mtgTime">
+                </div>
+                <button onclick="addMeeting()" style="width:100%; margin-top:10px;">🎀 Schedule Magic</button>
+            </div>
+            <div id="meeting-list" style="overflow-y:auto; max-height:300px;"></div>
         </div>
 
         <!-- ROW 1, CENTER: MAGICAL VITALITY -->
         <div class="card">
             <h2>💖 Magical Vitality</h2>
-            <div class="vitality-sections">
-                <!-- Mana -->
-                <div class="mana-section">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-weight:bold; font-size: 0.9rem;">💧 Mana Reservoir</span>
-                        <button onclick="resetMana()" style="background:#ef9a9a; font-size:0.6rem; padding: 3px 8px;">Reset 🧹</button>
-                    </div>
-                    <div class="mana-progress"><div id="mana-fill" class="mana-fill"></div></div>
-                    <div style="display:flex; justify-content: space-between; align-items:center;">
-                        <button onclick="addMana()" style="font-size:0.7rem; padding: 5px 10px;">➕ Recharge</button>
-                        <span id="mana-text" style="font-weight:bold; font-size: 0.8rem;">0 / 2000ml</span>
-                    </div>
+            
+            <!-- Mana Section -->
+            <div class="magical-box">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-weight:bold;">💧 Mana Reservoir</span>
+                    <button onclick="resetMana()" style="background:#ef9a9a; font-size:0.7rem; padding: 5px 12px;">Purify 🧹</button>
                 </div>
-
-                <!-- Moon & Mood -->
-                <div class="mood-moon-row">
-                    <div class="moon-box">
-                        <span id="moon-icon" style="font-size: 40px; display:block;">🌑</span>
-                        <p id="moon-phase-name" style="font-size:0.7rem; font-weight:bold;"></p>
-                    </div>
-                    <div class="mood-box">
-                        <p style="font-size:0.7rem; font-weight:bold; margin-bottom:5px;">Soul Gem:</p>
-                        <div class="gem-row">
-                            <div class="gem-unit"><div class="gem" style="background:#ffb3c6;" onclick="setMood(this, 'Happy')"></div><span>Happy</span></div>
-                            <div class="gem-unit"><div class="gem" style="background:#b4e4ff;" onclick="setMood(this, 'Calm')"></div><span>Calm</span></div>
-                            <div class="gem-unit"><div class="gem" style="background:#ffd56f;" onclick="setMood(this, 'Active')"></div><span>Active</span></div>
-                            <div class="gem-unit"><div class="gem" style="background:#a0a0a0;" onclick="setMood(this, 'Tired')"></div><span>Tired</span></div>
-                        </div>
-                    </div>
+                <div style="width:100%; height:20px; background:#eee; border-radius:50px; overflow:hidden; margin:10px 0; border:1px solid #ddd;">
+                    <div id="mana-fill" style="height:100%; width:0%; background:linear-gradient(90deg, #b4e4ff, #81d4fa); transition:0.5s;"></div>
                 </div>
-
-                <!-- Random Quote -->
-                <div class="quote-box" id="daily-affirmation">"Trust your magical heart."</div>
+                <div style="display:flex; justify-content: space-between; align-items:center;">
+                    <button onclick="addMana()">➕ Recharge 250ml</button>
+                    <span id="mana-text" style="font-weight:bold;">0 / 2000ml</span>
+                </div>
             </div>
+
+            <div class="vitality-row">
+                <!-- Real Moon Phase -->
+                <div class="magical-box moon-display">
+                    <span id="moon-icon">🌑</span>
+                    <p id="moon-phase-name" style="font-weight:bold; color:var(--accent-color); font-size:0.9rem;"></p>
+                </div>
+
+                <!-- Bigger Soul Gems -->
+                <div class="magical-box" style="text-align:center;">
+                    <p style="font-size:0.8rem; font-weight:bold; margin-bottom:5px;">Soul Gem Energy:</p>
+                    <div class="gem-row">
+                        <div class="gem-unit"><div class="gem" style="background:#ffb3c6;" onclick="setMood(this, 'Happy')"></div><span>Happy</span></div>
+                        <div class="gem-unit"><div class="gem" style="background:#b4e4ff;" onclick="setMood(this, 'Calm')"></div><span>Calm</span></div>
+                        <div class="gem-unit"><div class="gem" style="background:#ffd56f;" onclick="setMood(this, 'Active')"></div><span>Active</span></div>
+                        <div class="gem-unit"><div class="gem" style="background:#a0a0a0;" onclick="setMood(this, 'Tired')"></div><span>Tired</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quote-box" id="daily-affirmation">"Trust in the magic of your heart."</div>
         </div>
 
         <!-- ROW 1, RIGHT: QUEST SCROLL -->
         <div class="card">
             <h2>✅ Quest Scroll</h2>
-            <input type="text" id="newTaskText" placeholder="New quest...">
-            <input type="date" id="newTaskDate">
-            <select id="newTaskPrio">
-                <option value="low">Low</option>
-                <option value="med" selected>Medium</option>
-                <option value="high">High</option>
-            </select>
-            <button onclick="addTask()" style="width:100%;">✨ Add to Scroll</button>
-            <div id="task-list" style="margin-top:15px;"></div>
-            <div style="text-align:center; border-top:1px dashed #ccc; padding-top:10px;">
-                <p style="font-size:0.8rem; font-weight:bold;">🌟 Seeds: <span id="star-count">0</span></p>
+            <div class="magical-box">
+                <input type="text" id="newTaskText" placeholder="New quest name...">
+                <div style="display:flex; gap:10px; margin: 10px 0;">
+                    <input type="date" id="newTaskDate">
+                    <select id="newTaskPrio">
+                        <option value="low">Low</option>
+                        <option value="med" selected>Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <button onclick="addTask()" style="width:100%;">✨ Accept Quest</button>
+            </div>
+            <div id="task-list" style="overflow-y:auto; max-height:250px;"></div>
+            <div style="text-align:center;">
+                <p style="font-weight:bold;">🌟 Star Seeds: <span id="star-count">0</span></p>
                 <span id="rank-badge">Novice Guardian</span>
             </div>
         </div>
@@ -198,55 +203,67 @@
         <!-- ROW 2, LEFT: GUARDIAN THEME -->
         <div class="card">
             <h2>🎵 Guardian's Theme</h2>
-            <iframe src="https://open.spotify.com/embed/playlist/33EkgjUY2Pwbk6pzAKRX9q?utm_source=generator" width="100%" height="220" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" style="border-radius:20px;"></iframe>
+            <div class="magical-box" style="padding:5px;">
+                <iframe src="https://open.spotify.com/embed/playlist/33EkgjUY2Pwbk6pzAKRX9q?utm_source=generator" width="100%" height="300" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" style="border-radius:20px;"></iframe>
+            </div>
         </div>
 
         <!-- ROW 2, CENTER: PALACE CONTROLS -->
         <div class="card">
             <h2>⚙ Palace Controls</h2>
-            <button onclick="toggleDarkMode()" style="width:100%; margin-bottom:10px; background:#6a4c93;">🌙 Toggle Night Mode</button>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
-                <button onclick="downloadBackup()" style="background:#cdb4ff;">💾 Backup</button>
-                <button onclick="document.getElementById('restoreFile').click()" style="background:#ffb6d9;">📖 Restore</button>
+            <div class="magical-box" style="display:flex; flex-direction:column; gap:10px;">
+                <button onclick="toggleDarkMode()" style="background:#6a4c93;">🌙 Toggle Night Mode</button>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <button onclick="downloadBackup()" style="background:#cdb4ff;">💾 Backup Scroll</button>
+                    <button onclick="document.getElementById('restoreFile').click()" style="background:#ffb6d9;">📖 Restore Magic</button>
+                </div>
+                <input type="file" id="restoreFile" style="display:none" onchange="restoreBackup(event)">
+                <button onclick="clearData()" style="background:#ffcdd2; color:#b71c1c;">🗑 Reset Memories</button>
             </div>
-            <input type="file" id="restoreFile" style="display:none" onchange="restoreBackup(event)">
-            <button onclick="clearData()" style="width:100%; background:#ffcdd2; color:#b71c1c;">🗑 Reset Memories</button>
         </div>
 
-        <!-- ROW 2, RIGHT: TIMER -->
+        <!-- ROW 2, RIGHT: CRYSTAL TIMER -->
         <div class="card">
             <h2>⏰ Crystal Timer</h2>
-            <div class="timer" id="timer-display">25:00</div>
-            <div style="display:flex; gap:10px; justify-content:center; margin-top:10px;">
-                <button onclick="toggleTimer()" id="timer-btn">Start</button>
-                <button onclick="resetTimer()" style="background:#bbb;">Reset</button>
-            </div>
-            <div style="display:flex; gap:10px; justify-content:center; margin-top:10px;">
-                <button onclick="setBreak(5)" style="background:#b4e4ff; font-size:0.7rem;">5m Break</button>
-                <button onclick="setBreak(15)" style="background:#cdb4ff; font-size:0.7rem;">15m Break</button>
+            <div class="magical-box">
+                <div class="timer" id="timer-display">25:00</div>
+                <div style="display:flex; gap:10px; justify-content:center; margin-top:10px;">
+                    <button onclick="toggleTimer()" id="timer-btn">Start</button>
+                    <button onclick="resetTimer()" style="background:#bbb;">Reset</button>
+                </div>
+                <div style="display:flex; gap:5px; justify-content:center; margin-top:15px;">
+                    <button onclick="setBreak(5)" style="background:#b4e4ff; font-size:0.7rem;">5m Break</button>
+                    <button onclick="setBreak(15)" style="background:#cdb4ff; font-size:0.7rem;">15m Break</button>
+                </div>
             </div>
         </div>
 
     </div>
 
-    <!-- ALERTS -->
-    <div id="alert-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:linear-gradient(45deg, #ff9de2, #cdb4ff, #ffd56f); z-index:10000; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-        <h2 id="alert-heading" style="font-size:3rem; color:white; text-shadow:0 0 10px rgba(0,0,0,0.2);">Crystal Alert!</h2>
-        <p id="alert-text" style="font-size:1.5rem; color:white; margin:20px; font-weight:bold;"></p>
-        <button onclick="closeAlert()" style="background:white; color:#d46fb8; padding:15px 50px; font-size:1.2rem; border-radius:50px;">Got it! 🌙</button>
+    <!-- ALERT NOTIFICATION -->
+    <div id="alert-overlay">
+        <h2 id="alert-heading" style="font-size:3.5rem; text-shadow:0 0 20px white;">Crystal Power Alert!</h2>
+        <p id="alert-text" style="font-size:1.8rem; margin:25px; font-weight:bold;"></p>
+        <button onclick="closeAlert()" style="background:white; color:#d46fb8; padding:20px 60px; font-size:1.5rem; border-radius:50px;">Got it! 🌙</button>
     </div>
 
     <audio id="notif-sound" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3" loop></audio>
 
     <script>
         let state = { meetings: [], tasks: [], starSeeds: 0, mana: 0, darkMode: false, currentMood: "" };
-        const quotes = ["Trust in the magic of your heart.", "In the name of the Moon, conquer this day!", "You are a powerful Guardian.", "The stars are cheering for you!"];
+        const quotes = ["Trust in the magic of your heart.", "In the name of the Moon, conquer this day!", "The stars are cheering for you!", "A Moon Princess never gives up!"];
+        const alertHeads = ["Crystal Power Alert!", "Moon Prism Power Alert!", "Starlight Alert!", "Cosmic Power Alert!"];
 
-        function saveData() { localStorage.setItem('palace_os_v1', JSON.stringify(state)); }
+        function saveData() { localStorage.setItem('palace_os_final_v1', JSON.stringify(state)); }
         
         function loadData() {
-            const saved = localStorage.getItem('palace_os_v1');
-            if(saved) state = JSON.parse(saved);
+            const saved = localStorage.getItem('palace_os_final_v1');
+            if(saved) {
+                state = JSON.parse(saved);
+                // Ensure array structures exist to prevent restore bugs
+                if(!state.meetings) state.meetings = [];
+                if(!state.tasks) state.tasks = [];
+            }
             if(state.darkMode) document.body.classList.add('dark-mode');
             document.getElementById('daily-affirmation').innerText = `"${quotes[Math.floor(Math.random()*quotes.length)]}"`;
             renderTasks(); renderMeetings(); updateMana(); getMoonPhase();
@@ -260,7 +277,7 @@
 
         // --- MANA & MOOD ---
         function addMana() { state.mana = Math.min(2000, state.mana + 250); updateMana(); saveData(); }
-        function resetMana() { state.mana = 0; updateMana(); saveData(); }
+        function resetMana() { if(confirm("Reset Mana?")) { state.mana = 0; updateMana(); saveData(); } }
         function updateMana() {
             document.getElementById('mana-fill').style.width = (state.mana / 2000 * 100) + "%";
             document.getElementById('mana-text').innerText = state.mana + " / 2000ml";
@@ -282,8 +299,8 @@
         function renderTasks() {
             document.getElementById('task-list').innerHTML = state.tasks.map(t => `
                 <div class="item-row" style="border-left-color: ${t.prio === 'high' ? '#ff4d6d' : (t.prio === 'med' ? '#ffb703' : '#2ec4b6')}">
-                    <span style="font-size:0.85rem;"><b>${t.text}</b><br><small>${t.date}</small></span>
-                    <button onclick="completeQuest(${t.id})" style="background:none; border:none; font-size:1.2rem;">🌟</button>
+                    <span><b>${t.text || 'Untitled'}</b><br><small>📅 ${t.date || 'No Date'}</small></span>
+                    <button onclick="completeQuest(${t.id})" style="background:none; border:none; font-size:1.5rem;">🌟</button>
                 </div>
             `).join('');
             document.getElementById('star-count').innerText = state.starSeeds;
@@ -296,79 +313,3 @@
             if(state.starSeeds >= 30) { r = "Star Knight"; c = "#ffd56f"; }
             if(state.starSeeds >= 50) { r = "Moon Princess"; c = "#cdb4ff"; }
             const badge = document.getElementById('rank-badge');
-            badge.innerText = r; badge.style.backgroundColor = c; badge.style.boxShadow = `0 0 10px ${c}`;
-        }
-
-        // --- MEETINGS ---
-        function addMeeting() {
-            const t = document.getElementById('mtgTitle').value, d = document.getElementById('mtgDate').value, tm = document.getElementById('mtgTime').value;
-            if(!t || !d || !tm) return;
-            state.meetings.push({ id: Date.now(), title: t, date: d, time: tm, n15: false, nS: false });
-            document.getElementById('mtgTitle').value = ''; renderMeetings(); saveData();
-        }
-        function renderMeetings() {
-            document.getElementById('meeting-list').innerHTML = state.meetings.map(m => `
-                <div class="item-row"><span style="font-size:0.8rem;"><b>${m.title}</b><br>${m.date} @ ${m.time}</span>
-                <button onclick="deleteMtg(${m.id})" style="background:none; border:none; color:red;">×</button></div>
-            `).join('');
-        }
-        function deleteMtg(id) { state.meetings = state.meetings.filter(m => m.id !== id); renderMeetings(); saveData(); }
-
-        // --- TIMER ---
-        let tSecs = 1500, tInt = null;
-        function toggleTimer() {
-            const b = document.getElementById('timer-btn');
-            if(tInt) { clearInterval(tInt); tInt = null; b.innerText = "Start"; }
-            else { b.innerText = "Pause"; tInt = setInterval(() => {
-                tSecs--; updateTimerDisplay();
-                if(tSecs <= 0) { clearInterval(tInt); document.getElementById('notif-sound').play(); alert("Transformation Complete! Break Time!"); }
-            }, 1000); }
-        }
-        function updateTimerDisplay() {
-            const m = Math.floor(tSecs/60), s = tSecs%60;
-            document.getElementById('timer-display').innerText = `${m}:${s.toString().padStart(2,'0')}`;
-        }
-        function resetTimer() { clearInterval(tInt); tInt = null; tSecs = 1500; updateTimerDisplay(); document.getElementById('timer-btn').innerText = "Start"; }
-        function setBreak(m) { clearInterval(tInt); tInt = null; tSecs = m * 60; updateTimerDisplay(); document.getElementById('timer-btn').innerText = "Start"; }
-
-        // --- ENGINE ---
-        function getMoonPhase() {
-            const date = new Date();
-            let y = date.getFullYear(), m = date.getMonth() + 1, d = date.getDate();
-            if (m < 3) { y--; m += 12; }
-            let jd = (365.25 * y) + (30.6 * m) + d - 694039.09;
-            let phase = Math.round(((jd / 29.53) - parseInt(jd / 29.53)) * 29);
-            let res = {i: "🌕", n: "Full Moon"};
-            if (phase <= 1 || phase >= 29) res = {i: "🌑", n: "New Moon"};
-            else if (phase <= 7) res = {i: "🌒", n: "Waxing Crescent"};
-            else if (phase <= 14) res = {i: "🌓", n: "First Quarter"};
-            else if (phase <= 21) res = {i: "🌔", n: "Waxing Gibbous"};
-            document.getElementById('moon-icon').innerText = res.i;
-            document.getElementById('moon-phase-name').innerText = res.n;
-        }
-
-        setInterval(() => {
-            const now = new Date();
-            state.meetings.forEach(m => {
-                const md = new Date(`${m.date}T${m.time}`); const diff = (md - now) / 1000 / 60;
-                if (diff <= 15 && diff > 14 && !m.n15) { triggerAlert("Warning!", m.title + " in 15m"); m.n15 = true; saveData(); }
-                if (diff <= 0 && diff > -1 && !m.nS) { triggerAlert("It's Time!", m.title + " starting!"); m.nS = true; saveData(); }
-            });
-        }, 10000);
-
-        function triggerAlert(h, t) {
-            document.getElementById('alert-heading').innerText = h;
-            document.getElementById('alert-text').innerText = t;
-            document.getElementById('alert-overlay').style.display = 'flex';
-            document.getElementById('notif-sound').play();
-        }
-        function closeAlert() { document.getElementById('alert-overlay').style.display = 'none'; document.getElementById('notif-sound').pause(); }
-        
-        function downloadBackup() { const s = localStorage.getItem('palace_os_v1'); const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([s], {type: 'text/json'})); a.download = 'palace_backup.json'; a.click(); }
-        function restoreBackup(e) { const r = new FileReader(); r.onload = (x) => { localStorage.setItem('palace_os_v1', x.target.result); location.reload(); }; r.readAsText(e.target.files[0]); }
-        function clearData() { if(confirm("Erase memories?")) { localStorage.clear(); location.reload(); } }
-
-        window.onload = loadData;
-    </script>
-</body>
-</html>
