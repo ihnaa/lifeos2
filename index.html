@@ -313,3 +313,96 @@
             if(state.starSeeds >= 30) { r = "Star Knight"; c = "#ffd56f"; }
             if(state.starSeeds >= 50) { r = "Moon Princess"; c = "#cdb4ff"; }
             const badge = document.getElementById('rank-badge');
+            badge.innerText = r; badge.style.backgroundColor = c; badge.style.boxShadow = `0 0 15px ${c}`;
+        }
+
+        // --- MEETINGS ---
+        function addMeeting() {
+            const t = document.getElementById('mtgTitle').value, d = document.getElementById('mtgDate').value, tm = document.getElementById('mtgTime').value;
+            if(!t || !d || !tm) return;
+            state.meetings.push({ id: Date.now(), title: t, date: d, time: tm, n15: false, nS: false });
+            document.getElementById('mtgTitle').value = ''; renderMeetings(); saveData();
+        }
+        function renderMeetings() {
+            document.getElementById('meeting-list').innerHTML = state.meetings.map(m => `
+                <div class="item-row">
+                    <span><b>${m.title || 'Meeting'}</b><br><small>${m.date} @ ${m.time}</small></span>
+                    <button onclick="deleteMtg(${m.id})" style="background:none; border:none; color:red; font-size:1.2rem;">×</button>
+                </div>
+            `).join('');
+        }
+        function deleteMtg(id) { state.meetings = state.meetings.filter(m => m.id !== id); renderMeetings(); saveData(); }
+
+        // --- REAL MOON PHASE LOGIC ---
+        function getMoonPhase() {
+            const now = new Date();
+            const lp = 2551443; 
+            const new_moon = new Date(1970, 0, 7, 20, 35, 0);
+            const phase = ((now.getTime() - new_moon.getTime()) / 1000) % lp;
+            const res_phase = Math.floor(phase / (24 * 3600));
+            
+            let name = "Full Moon", icon = "🌕";
+            if (res_phase === 0) { name = "New Moon"; icon = "🌑"; }
+            else if (res_phase < 7) { name = "Waxing Crescent"; icon = "🌒"; }
+            else if (res_phase === 7) { name = "First Quarter"; icon = "🌓"; }
+            else if (res_phase < 14) { name = "Waxing Gibbous"; icon = "🌔"; }
+            else if (res_phase === 14) { name = "Full Moon"; icon = "🌕"; }
+            else if (res_phase < 22) { name = "Waning Gibbous"; icon = "🌖"; }
+            else if (res_phase === 22) { name = "Last Quarter"; icon = "🌗"; }
+            else { name = "Waning Crescent"; icon = "🌘"; }
+
+            document.getElementById('moon-icon').innerText = icon;
+            document.getElementById('moon-phase-name').innerText = name;
+        }
+
+        // --- TIMER ---
+        let tSecs = 1500, tInt = null;
+        function toggleTimer() {
+            const b = document.getElementById('timer-btn');
+            if(tInt) { clearInterval(tInt); tInt = null; b.innerText = "Start"; }
+            else { b.innerText = "Pause"; tInt = setInterval(() => {
+                tSecs--; updateTimerDisplay();
+                if(tSecs <= 0) { clearInterval(tInt); document.getElementById('notif-sound').play(); alert("Break!"); }
+            }, 1000); }
+        }
+        function updateTimerDisplay() {
+            const m = Math.floor(tSecs/60), s = tSecs%60;
+            document.getElementById('timer-display').innerText = `${m}:${s.toString().padStart(2,'0')}`;
+        }
+        function resetTimer() { clearInterval(tInt); tInt = null; tSecs = 1500; updateTimerDisplay(); document.getElementById('timer-btn').innerText = "Start"; }
+        function setBreak(m) { clearInterval(tInt); tInt = null; tSecs = m * 60; updateTimerDisplay(); document.getElementById('timer-btn').innerText = "Start"; }
+
+        // --- ALERT ENGINE ---
+        setInterval(() => {
+            const now = new Date();
+            state.meetings.forEach(m => {
+                const md = new Date(`${m.date}T${m.time}`); const diff = (md - now) / 1000 / 60;
+                if (diff <= 15 && diff > 14 && !m.n15) { triggerAlert(m.title + " in 15m"); m.n15 = true; saveData(); }
+                if (diff <= 0 && diff > -1 && !m.nS) { triggerAlert(m.title + " starts now!"); m.nS = true; saveData(); }
+            });
+        }, 10000);
+
+        function triggerAlert(t) {
+            document.getElementById('alert-heading').innerText = alertHeads[Math.floor(Math.random()*alertHeads.length)];
+            document.getElementById('alert-text').innerText = t;
+            document.getElementById('alert-overlay').style.display = 'flex';
+            document.getElementById('notif-sound').play();
+        }
+        function closeAlert() { document.getElementById('alert-overlay').style.display = 'none'; document.getElementById('notif-sound').pause(); }
+        
+        function downloadBackup() {
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(new Blob([localStorage.getItem('palace_os_final_v1')], {type: 'text/json'}));
+            a.download = 'palace_backup.json'; a.click();
+        }
+        function restoreBackup(e) {
+            const r = new FileReader();
+            r.onload = (x) => { localStorage.setItem('palace_os_final_v1', x.target.result); location.reload(); };
+            r.readAsText(e.target.files[0]);
+        }
+        function clearData() { if(confirm("Erase memories?")) { localStorage.clear(); location.reload(); } }
+
+        window.onload = loadData;
+    </script>
+</body>
+</html>
