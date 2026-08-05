@@ -79,7 +79,6 @@
             border-left: 5px solid var(--accent-color);
         }
 
-        /* NOTIFICATION OVERLAY */
         #meeting-alert-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -100,12 +99,6 @@
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
-        .sparkle { position: absolute; font-size: 30px; animation: blink 1.5s infinite; pointer-events: none; }
-        @keyframes blink { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: 1; transform: scale(1.2); } }
-
-        .alert-content h2 { font-size: 3.5rem; text-shadow: 0 0 20px rgba(255,255,255,0.8); margin-bottom: 10px; }
-        .alert-content p { font-size: 1.8rem; margin-bottom: 30px; font-weight: bold; }
 
         .alert-btn {
             background: white !important;
@@ -187,55 +180,74 @@
             </div>
         </div>
 
-        <!-- SETTINGS -->
+        <!-- SETTINGS / BACKUP -->
         <div class="card">
             <h2>⚙ Palace Controls</h2>
-            <button onclick="toggleDarkMode()" style="width:100%; margin-bottom:10px;">🌙 Night Mode</button>
-            <button onclick="clearData()" style="width:100%; background:#ffb3c6;">🗑 Reset Memories</button>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <button onclick="toggleDarkMode()" style="grid-column: span 2;">🌙 Night Mode</button>
+                
+                <!-- Backup Buttons -->
+                <button onclick="downloadBackup()" style="background:#CDB4FF;">💾 Backup Scroll</button>
+                <button onclick="document.getElementById('restoreFile').click()" style="background:#FFB6D9;">📖 Restore Magic</button>
+                <input type="file" id="restoreFile" style="display:none" onchange="restoreBackup(event)">
+                
+                <button onclick="clearData()" style="grid-column: span 2; background:#ffb3c6;">🗑 Reset Memories</button>
+            </div>
         </div>
     </div>
-
-<div class="footer">
-
-✨ "Believe in yourself and your dreams." ✨
-
-</div>
 
     <!-- NOTIFICATION OVERLAY -->
     <div id="meeting-alert-overlay">
         <div class="alert-content">
-            <div class="sparkle" style="top:15%; left:15%;">✨</div>
-            <div class="sparkle" style="top:25%; right:20%;">⭐</div>
-            <div class="sparkle" style="bottom:20%; left:30%;">✦</div>
             <h2 id="alert-heading">Crystal Power Alert!</h2>
             <p id="alert-text">You have a meeting soon!</p>
             <button class="alert-btn" onclick="closeAlert()">Got it! 🌙</button>
         </div>
     </div>
 
-    <!-- AUDIO -->
     <audio id="notif-sound" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3" loop></audio>
 
     <script>
         let state = { meetings: [], tasks: [], expenses: [], goalPercent: 50, darkMode: false };
 
+        // --- BACKUP & RESTORE LOGIC ---
+        function downloadBackup() {
+            const dataStr = localStorage.getItem('lifeOS_final_dual');
+            if (!dataStr) return alert("No magic data found to backup! ✨");
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            const exportFileDefaultName = 'lifeos_magic_backup.json';
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        }
+
+        function restoreBackup(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const contents = e.target.result;
+                    JSON.parse(contents); // Just to validate it's real JSON
+                    localStorage.setItem('lifeOS_final_dual', contents);
+                    alert("Magic restored successfully! Refreshing... 🌙");
+                    location.reload();
+                } catch (err) {
+                    alert("Oh no! This scroll is corrupted or invalid. 🎀");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // --- PREVIOUS ENGINE LOGIC ---
         function addMeeting() {
             const title = document.getElementById('mtgTitle').value;
             const date = document.getElementById('mtgDate').value;
             const time = document.getElementById('mtgTime').value;
             if(!title || !date || !time) return;
-
-            state.meetings.push({ 
-                id: Date.now(), 
-                title, 
-                date, 
-                time, 
-                notified15m: false, 
-                notifiedStart: false 
-            });
-            state.meetings.sort((a,b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`));
-            renderMeetings();
-            saveData();
+            state.meetings.push({ id: Date.now(), title, date, time, notified15m: false, notifiedStart: false });
+            renderMeetings(); saveData();
             document.getElementById('mtgTitle').value = '';
         }
 
@@ -250,33 +262,25 @@
                 list.appendChild(div);
             });
         }
-
         function deleteMtg(id) { state.meetings = state.meetings.filter(m => m.id !== id); renderMeetings(); saveData(); }
 
-        // --- DUAL ALERT ENGINE ---
         setInterval(() => {
             const now = new Date();
             state.meetings.forEach(m => {
                 const mtgDate = new Date(`${m.date}T${m.time}`);
-                const diff = (mtgDate - now) / 1000 / 60; // difference in minutes
-
-                // 1. 15-Minute Warning
+                const diff = (mtgDate - now) / 1000 / 60;
                 if (diff <= 15 && diff > 14 && !m.notified15m) {
-                    triggerAlert(m.title, "15-Minute Warning!", `"${m.title}" starts in 15 minutes!`);
-                    m.notified15m = true;
-                    saveData();
+                    triggerAlert("15-Minute Warning!", `"${m.title}" starts soon!`);
+                    m.notified15m = true; saveData();
                 }
-
-                // 2. Start Time Alert
                 if (diff <= 0 && diff > -1 && !m.notifiedStart) {
-                    triggerAlert(m.title, "Meeting is Starting!", `"${m.title}" is starting RIGHT NOW! ✨`);
-                    m.notifiedStart = true;
-                    saveData();
+                    triggerAlert("Meeting Started!", `"${m.title}" is happening NOW! ✨`);
+                    m.notifiedStart = true; saveData();
                 }
             });
-        }, 5000); // Check every 5 seconds
+        }, 10000);
 
-        function triggerAlert(title, heading, text) {
+        function triggerAlert(heading, text) {
             document.getElementById('alert-heading').innerText = heading;
             document.getElementById('alert-text').innerText = text;
             document.getElementById('meeting-alert-overlay').style.display = 'flex';
@@ -286,11 +290,9 @@
         function closeAlert() {
             const audio = document.getElementById('notif-sound');
             document.getElementById('meeting-alert-overlay').style.display = 'none';
-            audio.pause();
-            audio.currentTime = 0; 
+            audio.pause(); audio.currentTime = 0; 
         }
 
-        // --- TASKS, EXPENSES, CORE ---
         function addTask() {
             const text = document.getElementById('newTaskText').value;
             const date = document.getElementById('newTaskDate').value;
@@ -352,7 +354,6 @@
         function toggleDarkMode() { state.darkMode = document.body.classList.toggle('dark-mode'); saveData(); }
         function clearData() { if(confirm("Clear OS?")) { localStorage.clear(); location.reload(); }}
 
-        // --- TIMER ---
         let timerSecs = 1500, timerInt = null;
         function toggleTimer() {
             const btn = document.getElementById('timer-btn');
