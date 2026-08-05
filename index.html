@@ -25,12 +25,14 @@
             --border-color: #4a3f52;
         }
 
-        /* --- MAGIC CURSOR --- */
+        /* --- THE PINK MOON ROD CURSOR --- */
         * { 
             margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; 
-            cursor: url('https://cur.cursors-4u.net/anime/ani-12/ani1141.png'), auto !important;
+            /* This uses a transparent, resized version of your wand image */
+            cursor: url('https://i.ibb.co/3pXnJ6r/pink-rod-cursor.png'), auto !important;
         }
 
+        /* Pointer cursor for clickable items */
         button, a, .gem, .del-btn, input, select, .mana-progress, .card, .mana-reset {
             cursor: url('https://cur.cursors-4u.net/anime/ani-11/ani1018.png'), pointer !important;
         }
@@ -39,7 +41,12 @@
         h1 { text-align: center; font-size: 38px; color: var(--accent-color); text-shadow: 2px 2px white; margin-bottom: 5px;}
         #daily-affirmation { text-align: center; font-style: italic; color: #a67dc2; margin-bottom: 25px; font-weight: bold; }
 
-        .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
+        /* GRID LAYOUT: Meetings and Tasks at the TOP */
+        .container { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
+            gap: 20px; 
+        }
 
         .card {
             background: var(--card-bg);
@@ -66,12 +73,12 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        /* COMBINED SECTION STYLES */
+        /* MAGICAL VITALITY STYLES */
         .vitality-divider { border-top: 1px dashed var(--border-color); margin: 15px 0; padding-top: 15px; }
 
-        .mana-progress { width: 100%; height: 18px; background: #eee; border-radius: 50px; overflow: hidden; margin: 10px 0; position: relative;}
+        .mana-progress { width: 100%; height: 18px; background: #eee; border-radius: 50px; overflow: hidden; margin: 10px 0; }
         .mana-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #b4e4ff, #88d1f9); transition: 0.5s; }
-        .mana-reset { font-size: 0.7rem; background: #ddd; color: #666; padding: 4px 10px; border-radius: 10px; border: none; margin-left: 5px;}
+        .mana-reset { font-size: 0.7rem; background: #ddd; color: #666; padding: 4px 10px; border-radius: 10px; border: none; }
 
         #rank-badge {
             display: inline-block; padding: 8px 20px; border-radius: 50px; 
@@ -80,7 +87,7 @@
         }
 
         .spotify-crystal { border-radius: 20px; overflow: hidden; border: 4px double var(--border-color); background: #000; }
-        #spotify-player { width: 100%; height: 280px; border: none; display: block; }
+        #spotify-player { width: 100%; height: 320px; border: none; display: block; }
 
         .gem { width: 35px; height: 35px; border-radius: 50% 50% 10% 10%; border: 2px solid white; display: inline-block; margin: 0 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .selected { border: 3px solid gold; transform: scale(1.25); box-shadow: 0 0 10px gold; }
@@ -99,29 +106,29 @@
 <body oninput="saveData()">
 
     <h1>🌙 Crystal Power Palace ✨</h1>
-    <div id="daily-affirmation">"Trust in the magic within you."</div>
+    <div id="daily-affirmation">"In the name of the Moon, I will be productive!"</div>
 
     <div class="container">
 
-        <!-- ROW 1: MEETINGS -->
+        <!-- 1. MEETINGS (TOP ROW) -->
         <div class="card">
             <h2>📅 Crystal Meetings</h2>
             <div style="display:flex; flex-direction:column; gap:8px;">
-                <input type="text" id="mtgTitle" placeholder="Quest meeting title...">
+                <input type="text" id="mtgTitle" placeholder="Meeting Title">
                 <div style="display:flex; gap:5px;">
                     <input type="date" id="mtgDate" style="flex:1;">
                     <input type="time" id="mtgTime" style="flex:1;">
                 </div>
                 <button onclick="addMeeting()">🎀 Schedule Reminder</button>
             </div>
-            <div id="meeting-list" style="margin-top:15px;"></div>
+            <div id="meeting-list" style="margin-top:20px;"></div>
         </div>
 
-        <!-- ROW 1 & 2: QUEST SCROLL (Spans 2 rows) -->
+        <!-- 2. QUEST SCROLL (TOP ROW - SPANS 2) -->
         <div class="card" style="grid-row: span 2;">
             <h2>✅ Quest Scroll</h2>
             <div style="background: rgba(255,255,255,0.4); padding: 15px; border-radius: 20px; display: flex; flex-direction: column; gap: 8px; margin-bottom:15px;">
-                <input type="text" id="newTaskText" placeholder="What needs to be done?">
+                <input type="text" id="newTaskText" placeholder="Next Quest...">
                 <div style="display:flex; gap:5px;">
                     <input type="date" id="newTaskDate" style="flex:1;">
                     <select id="newTaskPrio">
@@ -130,7 +137,7 @@
                         <option value="high">High Priority</option>
                     </select>
                 </div>
-                <button onclick="addTask()">✨ Add to Scroll</button>
+                <button onclick="addTask()">✨ Add Task</button>
             </div>
             <div id="task-list"></div>
             
@@ -140,19 +147,19 @@
             </div>
         </div>
 
-        <!-- ROW 2: MAGICAL VITALITY (Combined Mana, Moon, Gem) -->
+        <!-- 3. MAGICAL VITALITY (Mana + Moon + Gems) -->
         <div class="card">
             <h2>💖 Magical Vitality</h2>
             
             <!-- Mana Reservoir -->
-            <div style="margin-bottom: 15px;">
+            <div>
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="font-size: 0.9rem; font-weight:bold;">💧 Mana Reservoir</span>
                     <button class="mana-reset" onclick="resetMana()">Purify 🧹</button>
                 </div>
                 <div class="mana-progress"><div id="mana-fill" class="mana-fill"></div></div>
                 <div style="display:flex; justify-content: space-between; align-items:center;">
-                    <button onclick="addMana()" style="padding: 5px 15px; font-size: 0.8rem;">➕ Recharge 250ml</button>
+                    <button onclick="addMana()" style="padding: 5px 15px; font-size: 0.75rem;">➕ Recharge 250ml</button>
                     <span id="mana-text" style="font-size: 0.8rem; font-weight:bold;">0 / 2000ml</span>
                 </div>
             </div>
@@ -170,7 +177,7 @@
 
             <div class="vitality-divider"></div>
 
-            <!-- Soul Gem -->
+            <!-- Soul Gems -->
             <div style="text-align:center;">
                 <p style="font-size: 0.8rem; margin-bottom: 8px;">Soul Gem Energy:</p>
                 <div class="gem" style="background:#ffb3c6;" onclick="setMood(this, 'Happy')" title="Happy"></div>
@@ -180,150 +187,8 @@
             </div>
         </div>
 
-        <!-- ROW 3: SPOTIFY -->
+        <!-- 4. SPOTIFY -->
         <div class="card">
             <h2>🎵 Guardian's Theme</h2>
             <div class="spotify-crystal">
-                <iframe id="spotify-player" src="https://open.spotify.com/embed/playlist/33EkgjUY2Pwbk6pzAKRX9q?utm_source=generator" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-            </div>
-        </div>
-
-        <!-- ROW 3: TIMER & SETTINGS -->
-        <div class="card">
-            <h2>⏰ Crystal Timer</h2>
-            <div class="timer" id="timer-display">25:00</div>
-            <div style="text-align:center; display:flex; gap:10px; justify-content:center; margin-bottom: 20px;">
-                <button onclick="toggleTimer()" id="timer-btn">Start Focus</button>
-                <button onclick="resetTimer()" style="background:#bbb;">Reset</button>
-            </div>
-
-            <div class="vitality-divider"></div>
-
-            <h2>⚙ Palace Controls</h2>
-            <button onclick="toggleDarkMode()" style="width:100%; margin-bottom:10px;">🌙 Night Mode</button>
-            <div style="display:flex; gap:8px;">
-                <button onclick="downloadBackup()" style="flex:1; background:#CDB4FF;">💾 Backup</button>
-                <button onclick="document.getElementById('restoreFile').click()" style="flex:1; background:#FFB6D9;">📖 Restore</button>
-            </div>
-            <input type="file" id="restoreFile" style="display:none" onchange="restoreBackup(event)">
-            <button onclick="clearData()" style="width:100%; margin-top:10px; background:#ffb3c6;">🗑 Reset Everything</button>
-        </div>
-
-    </div>
-
-    <!-- NOTIFICATION OVERLAY -->
-    <div id="meeting-alert-overlay">
-        <h2 id="alert-heading" style="font-size: 3rem; text-shadow: 0 0 15px white;">Crystal Power Alert!</h2>
-        <p id="alert-text" style="font-size: 1.5rem; margin: 25px 0; font-weight: bold;"></p>
-        <button onclick="closeAlert()" style="background:white; color:#d46fb8; padding: 18px 50px; font-size: 1.4rem; font-weight:bold;">I'm Ready! 🌙</button>
-    </div>
-
-    <audio id="notif-sound" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3" loop></audio>
-
-    <script>
-        let state = {
-            meetings: [], tasks: [], starSeeds: 0, mana: 0,
-            darkMode: false, currentMood: "", spotifyLink: "https://open.spotify.com/playlist/33EkgjUY2Pwbk6pzAKRX9q"
-        };
-
-        // --- MANA RESET ---
-        function resetMana() {
-            if(confirm("Purify Mana Reservoir for the new day? 🧹")) {
-                state.mana = 0;
-                updateMana();
-                saveData();
-            }
-        }
-
-        // --- RANK SYSTEM ---
-        function updateRank() {
-            let rank = "Novice Guardian", color = "#ffb3c6";
-            if (state.starSeeds >= 10) { rank = "Crystal Scout"; color = "#b4e4ff"; }
-            if (state.starSeeds >= 30) { rank = "Star Knight"; color = "#ffd56f"; }
-            if (state.starSeeds >= 50) { rank = "Moon Princess"; color = "#cdb4ff"; }
-            const badge = document.getElementById('rank-badge');
-            badge.innerText = rank; badge.style.backgroundColor = color; badge.style.boxShadow = `0 0 15px ${color}`;
-        }
-
-        // --- TASK LOGIC ---
-        function addTask() {
-            const t = document.getElementById('newTaskText').value, d = document.getElementById('newTaskDate').value, p = document.getElementById('newTaskPrio').value;
-            if(!t) return;
-            state.tasks.push({ id: Date.now(), text: t, date: d || "No date", prio: p });
-            renderTasks(); saveData();
-            document.getElementById('newTaskText').value = '';
-        }
-        function renderTasks() {
-            document.getElementById('task-list').innerHTML = state.tasks.map(t => `
-                <div class="item-row" style="border-left-color: ${t.prio === 'high' ? '#ff4d6d' : (t.prio === 'med' ? '#ffb703' : '#2ec4b6')}">
-                    <span><b>${t.text}</b><br><small>📅 ${t.date}</small></span>
-                    <button class="del-btn" onclick="completeQuest(${t.id})" style="background:none; border:none;">🌟</button>
-                </div>
-            `).join('');
-            document.getElementById('star-count').innerText = state.starSeeds;
-            updateRank();
-        }
-        function completeQuest(id) { state.tasks = state.tasks.filter(t => t.id !== id); state.starSeeds += 1; renderTasks(); saveData(); }
-
-        // --- MOON PHASE ---
-        function getMoonPhase() {
-            const date = new Date();
-            let y = date.getFullYear(), m = date.getMonth() + 1, d = date.getDate();
-            if (m < 3) { y--; m += 12; }
-            let jd = (365.25 * y) + (30.6 * m) + d - 694039.09;
-            let phase = Math.round(((jd / 29.5305882) - parseInt(jd / 29.5305882)) * 29);
-            let res = {i: "🌕", n: "Full Moon", p: "Power: 100%"};
-            if (phase <= 1 || phase >= 29) res = {i: "🌑", n: "New Moon", p: "Power: 10%"};
-            else if (phase <= 7) res = {i: "🌒", n: "Waxing Crescent", p: "Power: 25%"};
-            else if (phase <= 14) res = {i: "🌓", n: "First Quarter", p: "Power: 50%"};
-            else if (phase <= 21) res = {i: "🌔", n: "Waxing Gibbous", p: "Power: 75%"};
-            document.getElementById('moon-icon').innerText = res.i;
-            document.getElementById('moon-phase-name').innerText = res.n;
-            document.getElementById('moon-power').innerText = res.p;
-        }
-
-        // --- MEETINGS & ALERTS ---
-        function addMeeting() {
-            const t=document.getElementById('mtgTitle').value, d=document.getElementById('mtgDate').value, tm=document.getElementById('mtgTime').value;
-            if(t&&d&&tm){ state.meetings.push({id:Date.now(), t, d, tm, n15:false, nS:false}); renderMeetings(); saveData(); }
-        }
-        function renderMeetings() { document.getElementById('meeting-list').innerHTML = state.meetings.map(m=>`<div class="item-row"><span><b>${m.t}</b><br><small>${m.d} @ ${m.tm}</small></span><button class="del-btn" onclick="deleteMtg(${m.id})" style="background:none; border:none;">×</button></div>`).join(''); }
-        function deleteMtg(id) { state.meetings = state.meetings.filter(x=>x.id!==id); renderMeetings(); saveData(); }
-
-        setInterval(() => {
-            const n = new Date();
-            state.meetings.forEach(m => {
-                const md = new Date(`${m.d}T${m.tm}`); const diff = (md - n)/1000/60;
-                if(diff <= 15 && diff > 14 && !m.n15) { triggerAlert("Warning!", `"${m.t}" starts in 15m!`); m.n15=true; saveData(); }
-                if(diff <= 0 && diff > -1 && !m.nS) { triggerAlert("Alert!", `"${m.t}" starts now! ✨`); m.nS=true; saveData(); }
-            });
-        }, 10000);
-
-        function triggerAlert(h, t) { document.getElementById('alert-heading').innerText=h; document.getElementById('alert-text').innerText=t; document.getElementById('meeting-alert-overlay').style.display='flex'; document.getElementById('notif-sound').play(); }
-        function closeAlert() { document.getElementById('meeting-alert-overlay').style.display='none'; document.getElementById('notif-sound').pause(); document.getElementById('notif-sound').currentTime = 0; }
-        
-        // --- UTILS ---
-        function addMana() { state.mana = Math.min(2000, state.mana + 250); updateMana(); saveData(); }
-        function updateMana() { document.getElementById('mana-fill').style.width = (state.mana/2000)*100 + "%"; document.getElementById('mana-text').innerText = state.mana + " / 2000ml"; }
-        function setMood(el, mood) { document.querySelectorAll('.gem').forEach(g=>g.classList.remove('selected')); el.classList.add('selected'); state.currentMood = mood; saveData(); }
-        
-        function saveData() { localStorage.setItem('lifeOS_crystal_final', JSON.stringify(state)); }
-        function loadData() {
-            const saved = localStorage.getItem('lifeOS_crystal_final');
-            if(saved) state = JSON.parse(saved);
-            getMoonPhase(); renderTasks(); renderMeetings(); updateMana();
-            if(state.darkMode) document.body.classList.add('dark-mode');
-        }
-        function downloadBackup() { const s = localStorage.getItem('lifeOS_crystal_final'); const b = new Blob([s], {type: 'text/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'lifeos_backup.json'; a.click(); }
-        function restoreBackup(e) { const f = e.target.files[0]; const r = new FileReader(); r.onload = (x) => { localStorage.setItem('lifeOS_crystal_final', x.target.result); location.reload(); }; r.readAsText(f); }
-        function toggleDarkMode() { state.darkMode = document.body.classList.toggle('dark-mode'); saveData(); }
-        function clearData() { if(confirm("Clear OS memories?")) { localStorage.clear(); location.reload(); } }
-
-        let tSecs = 1500, tInt = null;
-        function toggleTimer() { const b = document.getElementById('timer-btn'); if(tInt) { clearInterval(tInt); tInt=null; b.innerText="Start Focus"; } else { b.innerText="Pause"; tInt = setInterval(() => { tSecs--; const m = Math.floor(tSecs/60), s = tSecs%60; document.getElementById('timer-display').innerText = `${m}:${s.toString().padStart(2,'0')}`; if(tSecs <= 0) { clearInterval(tInt); document.getElementById('notif-sound').play(); alert("Break!"); } }, 1000); } }
-        function resetTimer() { clearInterval(tInt); tInt=null; tSecs=1500; document.getElementById('timer-display').innerText="25:00"; }
-
-        window.onload = loadData;
-    </script>
-</body>
-</html>
+                <iframe id="spotify-player" src="https://open.spotify.com/embed/playlist/33EkgjUY2Pwbk6pzAKRX9q?utm_source=generator" allowfu
