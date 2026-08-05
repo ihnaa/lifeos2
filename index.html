@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌙 LifeOS: Crystal Power Pro</title>
+    <title>🌙 LifeOS: Crystal Power Master</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap');
 
@@ -28,9 +28,10 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
         body { background: var(--bg-gradient); min-height: 100vh; padding: 20px; color: var(--text-color); transition: 0.3s; }
         
-        h1 { text-align: center; font-size: 40px; color: var(--accent-color); margin-bottom: 20px; text-shadow: 2px 2px white; }
+        h1 { text-align: center; font-size: 38px; color: var(--accent-color); text-shadow: 2px 2px white; margin-bottom: 5px;}
+        #daily-affirmation { text-align: center; font-style: italic; color: #a67dc2; margin-bottom: 20px; font-weight: bold; }
 
-        .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 20px; }
+        .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
 
         .card {
             background: var(--card-bg);
@@ -39,225 +40,249 @@
             padding: 20px;
             border: 3px solid var(--border-color);
             box-shadow: 0 10px 25px rgba(255, 192, 203, .15);
-            transition: transform 0.3s ease;
+            transition: 0.3s;
         }
+        .card:hover { transform: translateY(-5px); }
 
         button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            color: white;
-            background: var(--btn-grad);
-            font-weight: bold;
-            transition: all 0.3s ease-in-out;
+            padding: 10px 18px; border: none; border-radius: 50px; cursor: pointer;
+            color: white; background: var(--btn-grad); font-weight: bold; transition: 0.3s;
         }
+        button:hover { background: var(--btn-hover); transform: scale(1.05); }
 
-        button:hover {
-            background: var(--btn-hover);
-            transform: scale(1.08);
-            box-shadow: 0 6px 15px rgba(255, 213, 111, 0.5);
-            color: #5e35b1;
-        }
-
-        input, select {
-            padding: 10px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            outline: none;
-            background: rgba(255, 255, 255, 0.8);
-        }
+        input, select, textarea { padding: 10px; border-radius: 12px; border: 1px solid var(--border-color); outline: none; width: 100%; margin-bottom: 10px;}
 
         .item-row {
-            background: white;
-            padding: 12px;
-            border-radius: 15px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-left: 5px solid var(--accent-color);
+            background: white; padding: 10px; border-radius: 15px; margin-bottom: 10px;
+            display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--accent-color);
         }
+
+        /* LUNA COMPANION */
+        .luna-box { text-align: center; background: rgba(205, 180, 255, 0.2); border-radius: 20px; padding: 10px; margin-bottom: 15px; position: relative; }
+        .luna-emoji { font-size: 40px; cursor: pointer; display: block; animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        /* MANA BAR */
+        .mana-progress { width: 100%; height: 20px; background: #eee; border-radius: 50px; overflow: hidden; margin: 10px 0; }
+        .mana-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #b4e4ff, #88d1f9); transition: 0.5s; }
+
+        /* STAR SEEDS & RANK */
+        .rank-badge { display: inline-block; padding: 5px 15px; background: gold; color: #5e35b1; border-radius: 50px; font-weight: bold; font-size: 0.8rem; margin-top: 5px; }
 
         #meeting-alert-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(45deg, #ff9de2, #CDB4FF, #FFD56F);
-            background-size: 400% 400%;
-            animation: gradientBG 5s ease infinite;
-            z-index: 10000;
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            text-align: center;
+            background-size: 400% 400%; animation: gradientBG 5s ease infinite;
+            z-index: 10000; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white;
         }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .alert-btn {
-            background: white !important;
-            color: #d46fb8 !important;
-            font-size: 1.5rem !important;
-            padding: 20px 60px !important;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
-        }
-
-        .del-btn { background: none; color: #ff78a7; box-shadow: none; padding: 0; font-size: 20px; }
+        .del-btn { background: none; color: #ff78a7; font-size: 20px; box-shadow: none;}
         .timer { font-size: 40px; text-align: center; color: var(--accent-color); margin: 10px 0; }
-        .progress { width: 100%; height: 15px; background: #eee; border-radius: 50px; overflow: hidden; margin: 10px 0; }
-        .fill { height: 100%; background: var(--btn-hover); transition: 0.5s; }
+        .gem { width: 35px; height: 35px; border-radius: 50% 50% 10% 10%; cursor: pointer; border: 2px solid white; display: inline-block; margin: 0 5px; }
+        .selected { border: 3px solid gold; transform: scale(1.2); }
     </style>
 </head>
 <body oninput="saveData()">
 
-    <h1 id="main-title" contenteditable="true">🌙 LifeOS: Crystal Power Pro ✨</h1>
+    <h1>🌙 Crystal Power OS ✨</h1>
+    <div id="daily-affirmation">"Your magic is stronger than you know."</div>
 
     <div class="container">
 
-        <!-- MEETINGS -->
+        <!-- LUNA'S ADVICE -->
         <div class="card">
-            <h2>📅 Crystal Meetings</h2>
-            <div style="display:flex; flex-direction:column; gap:8px;">
-                <input type="text" id="mtgTitle" placeholder="Meeting Purpose...">
-                <div style="display:flex; gap:5px;">
-                    <input type="date" id="mtgDate" style="flex:1;">
-                    <input type="time" id="mtgTime" style="flex:1;">
-                </div>
-                <button onclick="addMeeting()">🎀 Schedule Magic</button>
+            <div class="luna-box">
+                <span class="luna-emoji">🐱</span>
+                <p id="luna-tip" style="font-size: 0.85rem; font-weight: bold; color: #6a4c93;">"Checking your quests is the first step to victory!"</p>
             </div>
-            <div id="meeting-list" style="margin-top:20px;"></div>
+            <h2>💎 Soul Gem</h2>
+            <div style="text-align: center;">
+                <div class="gem" style="background:#ffb3c6;" onclick="setMood(this, 'Happy')"></div>
+                <div class="gem" style="background:#b4e4ff;" onclick="setMood(this, 'Calm')"></div>
+                <div class="gem" style="background:#ffd56f;" onclick="setMood(this, 'Energetic')"></div>
+                <div class="gem" style="background:#a0a0a0;" onclick="setMood(this, 'Tired')"></div>
+            </div>
+            <p id="mood-status" style="text-align: center; font-size: 0.8rem; margin-top:5px;"></p>
         </div>
 
-        <!-- TASKS -->
+        <!-- MANA RESERVOIR (WATER) -->
+        <div class="card">
+            <h2>💧 Mana Reservoir</h2>
+            <p style="font-size: 0.8rem;">Recharge your magical health (Water)</p>
+            <div class="mana-progress"><div id="mana-fill" class="mana-fill"></div></div>
+            <div style="display:flex; justify-content: space-between; align-items: center;">
+                <button onclick="addMana()">➕ Recharge 250ml</button>
+                <span id="mana-text">0 / 2000 ml</span>
+            </div>
+            <button onclick="resetMana()" style="margin-top:10px; background: #bbb; font-size: 10px;">Reset Day</button>
+        </div>
+
+        <!-- QUEST SCROLL (TASKS) -->
         <div class="card" style="grid-row: span 2;">
             <h2>✅ Quest Scroll</h2>
-            <div style="background: rgba(255,255,255,0.4); padding: 15px; border-radius: 20px; display: flex; flex-direction: column; gap: 8px; margin-bottom:15px;">
-                <input type="text" id="newTaskText" placeholder="New quest name...">
-                <div style="display:flex; gap:5px;">
-                    <input type="date" id="newTaskDate" style="flex:1;">
-                    <select id="newTaskPrio">
-                        <option value="low">Low</option>
-                        <option value="med" selected>Med</option>
-                        <option value="high">High</option>
-                    </select>
-                </div>
-                <button onclick="addTask()">✨ Add Task</button>
+            <input type="text" id="newTaskText" placeholder="Next magical task...">
+            <div style="display:flex; gap:5px;">
+                <input type="date" id="newTaskDate" style="flex:2;">
+                <select id="newTaskPrio" style="flex:1;">
+                    <option value="low">Low</option>
+                    <option value="med" selected>Med</option>
+                    <option value="high">High</option>
+                </select>
             </div>
-            <div id="task-list"></div>
-        </div>
-
-        <!-- GOAL -->
-        <div class="card">
-            <h2>🎯 Heart Goal</h2>
-            <p id="goal-name" contenteditable="true" style="font-weight:bold;">Master the Cosmic Arts</p>
-            <div onclick="editGoal()" style="cursor:pointer;">
-                <div class="progress"><div id="goal-fill" class="fill"></div></div>
-                <p id="goal-label" style="text-align: right; font-size: 0.8rem;">0% Complete</p>
+            <button onclick="addTask()" style="width:100%;">✨ Accept Quest</button>
+            <div id="task-list" style="margin-top:15px;"></div>
+            <div style="text-align:center; padding:10px; background:rgba(255,255,255,0.4); border-radius:20px;">
+                <p>🌟 Star Seeds: <span id="star-count">0</span></p>
+                <span id="rank-badge" class="rank-badge">Novice Guardian</span>
             </div>
         </div>
 
-        <!-- EXPENSES -->
+        <!-- LUNAR GRIMOIRE (JOURNAL) -->
         <div class="card">
-            <h2>💰 Treasury</h2>
-            <div id="expense-list"></div>
-            <h3 style="margin-top:15px; border-top: 1px solid #ddd; padding-top:10px;">Total: ₱<span id="total-amount">0</span></h3>
-            <button onclick="addExpense()">🪙 Record Spending</button>
+            <h2>📖 Lunar Grimoire</h2>
+            <textarea id="grimoire" placeholder="Write your secret spells and thoughts here..." rows="5" style="resize:none; background: rgba(255,255,255,0.5);"></textarea>
+            <small style="font-size: 10px; opacity: 0.6;">Auto-saves into your local memory.</small>
+        </div>
+
+        <!-- CRYSTAL MEETINGS -->
+        <div class="card">
+            <h2>📅 Crystal Meetings</h2>
+            <input type="text" id="mtgTitle" placeholder="Title">
+            <div style="display:flex; gap:5px;">
+                <input type="date" id="mtgDate">
+                <input type="time" id="mtgTime">
+            </div>
+            <button onclick="addMeeting()" style="width:100%;">🎀 Schedule</button>
+            <div id="meeting-list" style="margin-top:10px;"></div>
         </div>
 
         <!-- POMODORO -->
         <div class="card">
             <h2>⏰ Crystal Timer</h2>
             <div class="timer" id="timer-display">25:00</div>
-            <div style="text-align:center;">
+            <div style="text-align:center; display:flex; gap:10px; justify-content:center;">
                 <button onclick="toggleTimer()" id="timer-btn">Start</button>
                 <button onclick="resetTimer()">Reset</button>
             </div>
         </div>
 
-        <!-- SETTINGS / BACKUP -->
+        <!-- TREASURY & CONTROLS -->
         <div class="card">
             <h2>⚙ Palace Controls</h2>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                <button onclick="toggleDarkMode()" style="grid-column: span 2;">🌙 Night Mode</button>
-                
-                <!-- Backup Buttons -->
-                <button onclick="downloadBackup()" style="background:#CDB4FF;">💾 Backup Scroll</button>
-                <button onclick="document.getElementById('restoreFile').click()" style="background:#FFB6D9;">📖 Restore Magic</button>
+            <button onclick="toggleDarkMode()" style="width:100%; margin-bottom:10px;">🌙 Toggle Night Mode</button>
+            <div style="display:flex; gap:10px;">
+                <button onclick="downloadBackup()" style="flex:1; background:#CDB4FF;">💾 Backup</button>
+                <button onclick="document.getElementById('restoreFile').click()" style="flex:1; background:#FFB6D9;">📖 Restore</button>
                 <input type="file" id="restoreFile" style="display:none" onchange="restoreBackup(event)">
-                
-                <button onclick="clearData()" style="grid-column: span 2; background:#ffb3c6;">🗑 Reset Memories</button>
             </div>
+            <button onclick="clearData()" style="width:100%; margin-top:10px; background:#ffb3c6;">🗑 Reset Everything</button>
         </div>
+
     </div>
 
     <!-- NOTIFICATION OVERLAY -->
     <div id="meeting-alert-overlay">
-        <div class="alert-content">
-            <h2 id="alert-heading">Crystal Power Alert!</h2>
-            <p id="alert-text">You have a meeting soon!</p>
-            <button class="alert-btn" onclick="closeAlert()">Got it! 🌙</button>
-        </div>
+        <h2 id="alert-heading" style="font-size: 3rem;">Crystal Power Alert!</h2>
+        <p id="alert-text" style="font-size: 1.5rem; margin: 25px 0;"></p>
+        <button onclick="closeAlert()" style="background:white; color:#d46fb8; padding: 20px 60px; font-size: 1.5rem; font-weight:bold;">Got it! 🌙</button>
     </div>
 
     <audio id="notif-sound" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3" loop></audio>
 
     <script>
-        let state = { meetings: [], tasks: [], expenses: [], goalPercent: 50, darkMode: false };
+        let state = {
+            meetings: [], tasks: [], expenses: [], 
+            starSeeds: 0, mana: 0, grimoireText: "",
+            darkMode: false, currentMood: ""
+        };
 
-        // --- BACKUP & RESTORE LOGIC ---
-        function downloadBackup() {
-            const dataStr = localStorage.getItem('lifeOS_final_dual');
-            if (!dataStr) return alert("No magic data found to backup! ✨");
-            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-            const exportFileDefaultName = 'lifeos_magic_backup.json';
-            const linkElement = document.createElement('a');
-            linkElement.setAttribute('href', dataUri);
-            linkElement.setAttribute('download', exportFileDefaultName);
-            linkElement.click();
+        const lunaTips = [
+            "🐱 \"Drink your mana (water), it keeps your magic bright!\"",
+            "🐱 \"A focused Guardian can finish any quest.\"",
+            "🐱 \"Resting is just as important as fighting evil!\"",
+            "🐱 \"Don't forget to backup your magical scroll!\"",
+            "🐱 \"Is your Grimoire empty? Write down a dream!\"",
+            "🐱 \"In the name of the Moon, you will be productive today!\""
+        ];
+
+        // --- MANA (WATER) LOGIC ---
+        function addMana() {
+            state.mana = Math.min(2000, state.mana + 250);
+            updateManaUI();
+            saveData();
+        }
+        function resetMana() { state.mana = 0; updateManaUI(); saveData(); }
+        function updateManaUI() {
+            const percent = (state.mana / 2000) * 100;
+            document.getElementById('mana-fill').style.width = percent + "%";
+            document.getElementById('mana-text').innerText = state.mana + " / 2000 ml";
         }
 
-        function restoreBackup(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const contents = e.target.result;
-                    JSON.parse(contents); // Just to validate it's real JSON
-                    localStorage.setItem('lifeOS_final_dual', contents);
-                    alert("Magic restored successfully! Refreshing... 🌙");
-                    location.reload();
-                } catch (err) {
-                    alert("Oh no! This scroll is corrupted or invalid. 🎀");
-                }
-            };
-            reader.readAsText(file);
+        // --- RANK LOGIC ---
+        function updateRank() {
+            let rank = "Novice Guardian";
+            if (state.starSeeds >= 10) rank = "Crystal Scout";
+            if (state.starSeeds >= 30) rank = "Star Knight";
+            if (state.starSeeds >= 50) rank = "Moon Princess";
+            document.getElementById('rank-badge').innerText = rank;
         }
 
-        // --- PREVIOUS ENGINE LOGIC ---
+        // --- TASK LOGIC ---
+        function addTask() {
+            const text = document.getElementById('newTaskText').value;
+            const date = document.getElementById('newTaskDate').value;
+            const prio = document.getElementById('newTaskPrio').value;
+            if(!text) return;
+            state.tasks.push({ id: Date.now(), text, date: date || "No date", prio });
+            renderTasks(); saveData();
+            document.getElementById('newTaskText').value = '';
+        }
+        function renderTasks() {
+            const list = document.getElementById('task-list');
+            list.innerHTML = '';
+            state.tasks.forEach(t => {
+                const div = document.createElement('div');
+                div.className = 'item-row';
+                div.style.borderLeftColor = t.prio === 'high' ? '#ff4d6d' : (t.prio === 'med' ? '#ffb703' : '#2ec4b6');
+                div.innerHTML = `<div><b>${t.text}</b><br><small>📅 ${t.date}</small></div>
+                                 <button class="del-btn" onclick="completeQuest(${t.id})">🌟</button>`;
+                list.appendChild(div);
+            });
+            document.getElementById('star-count').innerText = state.starSeeds;
+            updateRank();
+        }
+        function completeQuest(id) {
+            state.tasks = state.tasks.filter(t => t.id !== id);
+            state.starSeeds += 1;
+            renderTasks(); saveData();
+        }
+
+        // --- MOOD & GRIMOIRE ---
+        function setMood(el, mood) {
+            document.querySelectorAll('.gem').forEach(g => g.classList.remove('selected'));
+            el.classList.add('selected');
+            state.currentMood = mood;
+            document.getElementById('mood-status').innerText = "Feeling: " + mood;
+            saveData();
+        }
+
+        // --- MEETING & ALERTS ---
         function addMeeting() {
             const title = document.getElementById('mtgTitle').value;
             const date = document.getElementById('mtgDate').value;
             const time = document.getElementById('mtgTime').value;
             if(!title || !date || !time) return;
-            state.meetings.push({ id: Date.now(), title, date, time, notified15m: false, notifiedStart: false });
+            state.meetings.push({ id: Date.now(), title, date, time, n15: false, nS: false });
             renderMeetings(); saveData();
-            document.getElementById('mtgTitle').value = '';
         }
-
         function renderMeetings() {
             const list = document.getElementById('meeting-list');
             list.innerHTML = '';
             state.meetings.forEach(m => {
                 const div = document.createElement('div');
                 div.className = 'item-row';
-                div.innerHTML = `<div><b>${m.title}</b><br><small>📅 ${m.date} @ ${m.time}</small></div>
+                div.innerHTML = `<div><b>${m.title}</b><br><small>${m.date} @ ${m.time}</small></div>
                                  <button class="del-btn" onclick="deleteMtg(${m.id})">×</button>`;
                 list.appendChild(div);
             });
@@ -269,103 +294,46 @@
             state.meetings.forEach(m => {
                 const mtgDate = new Date(`${m.date}T${m.time}`);
                 const diff = (mtgDate - now) / 1000 / 60;
-                if (diff <= 15 && diff > 14 && !m.notified15m) {
-                    triggerAlert("15-Minute Warning!", `"${m.title}" starts soon!`);
-                    m.notified15m = true; saveData();
-                }
-                if (diff <= 0 && diff > -1 && !m.notifiedStart) {
-                    triggerAlert("Meeting Started!", `"${m.title}" is happening NOW! ✨`);
-                    m.notifiedStart = true; saveData();
-                }
+                if (diff <= 15 && diff > 14 && !m.n15) { triggerAlert("Warning!", `"${m.title}" in 15m!`); m.n15 = true; saveData(); }
+                if (diff <= 0 && diff > -1 && !m.nS) { triggerAlert("On Time!", `"${m.title}" starts now! ✨`); m.nS = true; saveData(); }
             });
         }, 10000);
 
-        function triggerAlert(heading, text) {
-            document.getElementById('alert-heading').innerText = heading;
-            document.getElementById('alert-text').innerText = text;
+        function triggerAlert(h, t) {
+            document.getElementById('alert-heading').innerText = h;
+            document.getElementById('alert-text').innerText = t;
             document.getElementById('meeting-alert-overlay').style.display = 'flex';
-            document.getElementById('notif-sound').play(); 
+            document.getElementById('notif-sound').play();
         }
-
         function closeAlert() {
             const audio = document.getElementById('notif-sound');
             document.getElementById('meeting-alert-overlay').style.display = 'none';
-            audio.pause(); audio.currentTime = 0; 
+            audio.pause(); audio.currentTime = 0;
         }
 
-        function addTask() {
-            const text = document.getElementById('newTaskText').value;
-            const date = document.getElementById('newTaskDate').value;
-            const prio = document.getElementById('newTaskPrio').value;
-            if(!text) return;
-            state.tasks.push({ id: Date.now(), text, date: date || "No date", prio });
-            renderTasks(); saveData();
-            document.getElementById('newTaskText').value = '';
+        // --- CORE LOGIC ---
+        function saveData() { 
+            state.grimoireText = document.getElementById('grimoire').value;
+            localStorage.setItem('lifeOS_mega_v2', JSON.stringify(state)); 
         }
-
-        function renderTasks() {
-            const list = document.getElementById('task-list');
-            list.innerHTML = '';
-            state.tasks.forEach(t => {
-                const div = document.createElement('div');
-                div.className = 'item-row';
-                div.style.borderLeftColor = t.prio === 'high' ? '#ff4d6d' : (t.prio === 'med' ? '#ffb703' : '#2ec4b6');
-                div.innerHTML = `<div><b>${t.text}</b><br><small>📅 ${t.date}</small></div>
-                                 <button class="del-btn" onclick="deleteTask(${t.id})">×</button>`;
-                list.appendChild(div);
-            });
-        }
-        function deleteTask(id) { state.tasks = state.tasks.filter(t => t.id !== id); renderTasks(); saveData(); }
-
-        function addExpense() { state.expenses.push({name:"New Item", price:0}); renderExpenses(); saveData(); }
-        function renderExpenses() {
-            const list = document.getElementById('expense-list');
-            list.innerHTML = '';
-            let total = 0;
-            state.expenses.forEach((e, i) => {
-                const div = document.createElement('div');
-                div.className = 'item-row';
-                div.innerHTML = `<span contenteditable="true" onblur="updateExp(${i},'n',this.innerText)">${e.name}</span>
-                                 <span>₱<span contenteditable="true" onblur="updateExp(${i},'p',this.innerText)">${e.price}</span>
-                                 <button class="del-btn" onclick="state.expenses.splice(${i},1); renderExpenses(); saveData();">×</button></span>`;
-                list.appendChild(div);
-                total += parseFloat(e.price) || 0;
-            });
-            document.getElementById('total-amount').innerText = total.toLocaleString();
-        }
-        function updateExp(i, type, val) {
-            if(type==='n') state.expenses[i].name = val; else state.expenses[i].price = val;
-            renderExpenses(); saveData();
-        }
-
-        function saveData() { localStorage.setItem('lifeOS_final_dual', JSON.stringify(state)); }
         function loadData() {
-            const saved = localStorage.getItem('lifeOS_final_dual');
+            const saved = localStorage.getItem('lifeOS_mega_v2');
             if(saved) state = JSON.parse(saved);
-            renderMeetings(); renderTasks(); renderExpenses();
-            document.getElementById('goal-fill').style.width = state.goalPercent + '%';
-            document.getElementById('goal-label').innerText = state.goalPercent + '% Complete';
+            document.getElementById('luna-tip').innerText = lunaTips[Math.floor(Math.random()*lunaTips.length)];
+            document.getElementById('grimoire').value = state.grimoireText || "";
+            renderTasks(); renderMeetings(); updateManaUI();
             if(state.darkMode) document.body.classList.add('dark-mode');
         }
-        function editGoal() {
-            let val = prompt("Goal %:", state.goalPercent);
-            if(val) { state.goalPercent = val; loadData(); saveData(); }
-        }
-        function toggleDarkMode() { state.darkMode = document.body.classList.toggle('dark-mode'); saveData(); }
-        function clearData() { if(confirm("Clear OS?")) { localStorage.clear(); location.reload(); }}
 
-        let timerSecs = 1500, timerInt = null;
-        function toggleTimer() {
-            const btn = document.getElementById('timer-btn');
-            if(timerInt) { clearInterval(timerInt); timerInt = null; btn.innerText = "Start"; }
-            else { btn.innerText = "Pause"; timerInt = setInterval(() => {
-                timerSecs--;
-                const m = Math.floor(timerSecs/60), s = timerSecs%60;
-                document.getElementById('timer-display').innerText = `${m}:${s.toString().padStart(2,'0')}`;
-                if(timerSecs <= 0) { clearInterval(timerInt); document.getElementById('notif-sound').play(); alert("Break!"); }
-            }, 1000); }
-        }
-        function resetTimer() { clearInterval(timerInt); timerInt = null; timerSecs = 1500; document.getElementById('timer-display').innerText = "25:00"; }
+        function downloadBackup() { const dataStr = localStorage.getItem('lifeOS_mega_v2'); const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr); const link = document.createElement('a'); link.setAttribute('href', dataUri); link.setAttribute('download', 'lifeos_backup.json'); link.click(); }
+        function restoreBackup(event) { const file = event.target.files[0]; const reader = new FileReader(); reader.onload = function(e) { localStorage.setItem('lifeOS_mega_v2', e.target.result); location.reload(); }; reader.readAsText(file); }
+        function toggleDarkMode() { state.darkMode = document.body.classList.toggle('dark-mode'); saveData(); }
+        function clearData() { if(confirm("Erase all Palace memories?")) { localStorage.clear(); location.reload(); }}
+
+        // Timer
+        let tS = 1500, tI = null;
+        function toggleTimer() { const btn = document.getElementById('timer-btn'); if(tI) { clearInterval(tI); tI = null; btn.innerText = "Start"; } else { btn.innerText = "Pause"; tI = setInterval(() => { tS--; const m = Math.floor(tS/60), s = tS%60; document.getElementById('timer-display').innerText = `${m}:${s.toString().padStart(2,'0')}`; if(tS <= 0) { clearInterval(tI); document.getElementById('notif-sound').play(); alert("Transformation Break!"); } }, 1000); } }
+        function resetTimer() { clearInterval(tI); tI = null; tS = 1500; document.getElementById('timer-display').innerText = "25:00"; }
 
         window.onload = loadData;
     </script>
