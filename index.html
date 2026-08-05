@@ -57,18 +57,26 @@
             display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--accent-color);
         }
 
-        /* LUNA COMPANION */
-        .luna-box { text-align: center; background: rgba(205, 180, 255, 0.2); border-radius: 20px; padding: 10px; margin-bottom: 15px; position: relative; }
-        .luna-emoji { font-size: 40px; cursor: pointer; display: block; animation: float 3s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        /* SPOTIFY PORTAL STYLES */
+        .spotify-crystal {
+            margin-top: 10px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 4px double var(--border-color);
+            box-shadow: 0 0 15px rgba(212, 111, 184, 0.2);
+            background: #000;
+        }
+        #spotify-player { width: 100%; height: 380px; border: none; display: block; }
+
+        /* LUNAR CALENDAR */
+        .moon-display { text-align: center; padding: 15px; background: rgba(255,255,255,0.3); border-radius: 20px; }
+        #moon-icon { font-size: 50px; display: block; filter: drop-shadow(0 0 10px gold); }
 
         /* MANA BAR */
-        .mana-progress { width: 100%; height: 20px; background: #eee; border-radius: 50px; overflow: hidden; margin: 10px 0; }
-        .mana-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #b4e4ff, #88d1f9); transition: 0.5s; }
+        .mana-progress { width: 100%; height: 15px; background: #eee; border-radius: 50px; overflow: hidden; margin: 10px 0; }
+        .mana-fill { height: 100%; width: 0%; background: #b4e4ff; transition: 0.5s; }
 
-        /* STAR SEEDS & RANK */
-        .rank-badge { display: inline-block; padding: 5px 15px; background: gold; color: #5e35b1; border-radius: 50px; font-weight: bold; font-size: 0.8rem; margin-top: 5px; }
-
+        /* OVERLAY */
         #meeting-alert-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(45deg, #ff9de2, #CDB4FF, #FFD56F);
@@ -77,7 +85,7 @@
         }
         @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        .del-btn { background: none; color: #ff78a7; font-size: 20px; box-shadow: none;}
+        .del-btn { background: none; color: #ff78a7; font-size: 20px; cursor:pointer; border:none;}
         .timer { font-size: 40px; text-align: center; color: var(--accent-color); margin: 10px 0; }
         .gem { width: 35px; height: 35px; border-radius: 50% 50% 10% 10%; cursor: pointer; border: 2px solid white; display: inline-block; margin: 0 5px; }
         .selected { border: 3px solid gold; transform: scale(1.2); }
@@ -86,15 +94,34 @@
 <body oninput="saveData()">
 
     <h1>🌙 Crystal Power OS ✨</h1>
-    <div id="daily-affirmation">"Your magic is stronger than you know."</div>
+    <div id="daily-affirmation">"Trust in the magic of your own heart."</div>
 
     <div class="container">
 
-        <!-- LUNA'S ADVICE -->
+        <!-- SPOTIFY PORTAL -->
         <div class="card">
-            <div class="luna-box">
-                <span class="luna-emoji">🐱</span>
-                <p id="luna-tip" style="font-size: 0.85rem; font-weight: bold; color: #6a4c93;">"Checking your quests is the first step to victory!"</p>
+            <h2>🎵 Guardian's Playlist</h2>
+            <div class="spotify-crystal">
+                <iframe id="spotify-player" src="https://open.spotify.com/embed/playlist/33EkgjUY2Pwbk6pzAKRX9q?utm_source=generator" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            </div>
+            <input type="text" id="spotify-link" placeholder="Change playlist URL..." onchange="updateSpotify()" style="margin-top:10px; font-size: 0.7rem;">
+        </div>
+
+        <!-- LUNAR PHASE -->
+        <div class="card">
+            <h2>🌙 Lunar Phase</h2>
+            <div class="moon-display">
+                <span id="moon-icon">🌑</span>
+                <p id="moon-phase-name">Calculating...</p>
+                <small id="moon-power" style="color: #6a4c93; font-weight: bold;"></small>
+            </div>
+        </div>
+
+        <!-- LUNA COMPANION -->
+        <div class="card">
+            <div style="text-align: center; background: rgba(205, 180, 255, 0.2); border-radius: 20px; padding: 10px; margin-bottom: 10px;">
+                <span style="font-size: 40px; animation: float 3s infinite; display:block;">🐱</span>
+                <p id="luna-tip" style="font-size: 0.8rem; font-weight: bold; color: #6a4c93;"></p>
             </div>
             <h2>💎 Soul Gem</h2>
             <div style="text-align: center;">
@@ -103,25 +130,12 @@
                 <div class="gem" style="background:#ffd56f;" onclick="setMood(this, 'Energetic')"></div>
                 <div class="gem" style="background:#a0a0a0;" onclick="setMood(this, 'Tired')"></div>
             </div>
-            <p id="mood-status" style="text-align: center; font-size: 0.8rem; margin-top:5px;"></p>
         </div>
 
-        <!-- MANA RESERVOIR (WATER) -->
-        <div class="card">
-            <h2>💧 Mana Reservoir</h2>
-            <p style="font-size: 0.8rem;">Recharge your magical health (Water)</p>
-            <div class="mana-progress"><div id="mana-fill" class="mana-fill"></div></div>
-            <div style="display:flex; justify-content: space-between; align-items: center;">
-                <button onclick="addMana()">➕ Recharge 250ml</button>
-                <span id="mana-text">0 / 2000 ml</span>
-            </div>
-            <button onclick="resetMana()" style="margin-top:10px; background: #bbb; font-size: 10px;">Reset Day</button>
-        </div>
-
-        <!-- QUEST SCROLL (TASKS) -->
+        <!-- QUEST SCROLL -->
         <div class="card" style="grid-row: span 2;">
             <h2>✅ Quest Scroll</h2>
-            <input type="text" id="newTaskText" placeholder="Next magical task...">
+            <input type="text" id="newTaskText" placeholder="New quest...">
             <div style="display:flex; gap:5px;">
                 <input type="date" id="newTaskDate" style="flex:2;">
                 <select id="newTaskPrio" style="flex:1;">
@@ -134,20 +148,23 @@
             <div id="task-list" style="margin-top:15px;"></div>
             <div style="text-align:center; padding:10px; background:rgba(255,255,255,0.4); border-radius:20px;">
                 <p>🌟 Star Seeds: <span id="star-count">0</span></p>
-                <span id="rank-badge" class="rank-badge">Novice Guardian</span>
+                <span id="rank-badge" style="font-size: 0.8rem; font-weight: bold;">Novice Guardian</span>
             </div>
         </div>
 
-        <!-- LUNAR GRIMOIRE (JOURNAL) -->
+        <!-- MANA RESERVOIR -->
         <div class="card">
-            <h2>📖 Lunar Grimoire</h2>
-            <textarea id="grimoire" placeholder="Write your secret spells and thoughts here..." rows="5" style="resize:none; background: rgba(255,255,255,0.5);"></textarea>
-            <small style="font-size: 10px; opacity: 0.6;">Auto-saves into your local memory.</small>
+            <h2>💧 Mana (Water)</h2>
+            <div class="mana-progress"><div id="mana-fill" class="mana-fill"></div></div>
+            <div style="display:flex; justify-content: space-between; align-items:center;">
+                <button onclick="addMana()">➕ Recharge</button>
+                <span id="mana-text" style="font-size: 0.8rem;">0 / 2000ml</span>
+            </div>
         </div>
 
-        <!-- CRYSTAL MEETINGS -->
+        <!-- MEETINGS -->
         <div class="card">
-            <h2>📅 Crystal Meetings</h2>
+            <h2>📅 Meetings</h2>
             <input type="text" id="mtgTitle" placeholder="Title">
             <div style="display:flex; gap:5px;">
                 <input type="date" id="mtgDate">
@@ -167,16 +184,16 @@
             </div>
         </div>
 
-        <!-- TREASURY & CONTROLS -->
+        <!-- CONTROLS -->
         <div class="card">
             <h2>⚙ Palace Controls</h2>
-            <button onclick="toggleDarkMode()" style="width:100%; margin-bottom:10px;">🌙 Toggle Night Mode</button>
-            <div style="display:flex; gap:10px;">
-                <button onclick="downloadBackup()" style="flex:1; background:#CDB4FF;">💾 Backup</button>
-                <button onclick="document.getElementById('restoreFile').click()" style="flex:1; background:#FFB6D9;">📖 Restore</button>
-                <input type="file" id="restoreFile" style="display:none" onchange="restoreBackup(event)">
+            <button onclick="toggleDarkMode()" style="width:100%; margin-bottom:10px;">🌙 Night Mode</button>
+            <div style="display:flex; gap:5px;">
+                <button onclick="downloadBackup()" style="flex:1;">💾 Backup</button>
+                <button onclick="document.getElementById('restoreFile').click()" style="flex:1;">📖 Restore</button>
             </div>
-            <button onclick="clearData()" style="width:100%; margin-top:10px; background:#ffb3c6;">🗑 Reset Everything</button>
+            <input type="file" id="restoreFile" style="display:none" onchange="restoreBackup(event)">
+            <button onclick="clearData()" style="width:100%; margin-top:10px; background:#ffb3c6;">🗑 Reset</button>
         </div>
 
     </div>
@@ -185,155 +202,104 @@
     <div id="meeting-alert-overlay">
         <h2 id="alert-heading" style="font-size: 3rem;">Crystal Power Alert!</h2>
         <p id="alert-text" style="font-size: 1.5rem; margin: 25px 0;"></p>
-        <button onclick="closeAlert()" style="background:white; color:#d46fb8; padding: 20px 60px; font-size: 1.5rem; font-weight:bold;">Got it! 🌙</button>
+        <button onclick="closeAlert()" style="background:white; color:#d46fb8; padding: 15px 40px; font-size: 1.5rem; font-weight:bold;">Got it! 🌙</button>
     </div>
 
     <audio id="notif-sound" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3" loop></audio>
 
     <script>
         let state = {
-            meetings: [], tasks: [], expenses: [], 
-            starSeeds: 0, mana: 0, grimoireText: "",
-            darkMode: false, currentMood: ""
+            meetings: [], tasks: [], starSeeds: 0, mana: 0,
+            darkMode: false, currentMood: "", spotifyLink: "https://open.spotify.com/playlist/33EkgjUY2Pwbk6pzAKRX9q"
         };
 
-        const lunaTips = [
-            "🐱 \"Drink your mana (water), it keeps your magic bright!\"",
-            "🐱 \"A focused Guardian can finish any quest.\"",
-            "🐱 \"Resting is just as important as fighting evil!\"",
-            "🐱 \"Don't forget to backup your magical scroll!\"",
-            "🐱 \"Is your Grimoire empty? Write down a dream!\"",
-            "🐱 \"In the name of the Moon, you will be productive today!\""
-        ];
+        const lunaTips = ["🐱 \"This playlist has strong magical energy!\"", "🐱 \"A Guardian always drinks their mana.\"", "🐱 \"Check the moon phase before a quest!\""];
 
-        // --- MANA (WATER) LOGIC ---
-        function addMana() {
-            state.mana = Math.min(2000, state.mana + 250);
-            updateManaUI();
+        function updateSpotify() {
+            let link = document.getElementById('spotify-link').value;
+            if(!link) return;
+            let embedLink = link.split('?')[0].replace(".com/", ".com/embed/");
+            document.getElementById('spotify-player').src = embedLink + "?utm_source=generator";
+            state.spotifyLink = link;
             saveData();
         }
-        function resetMana() { state.mana = 0; updateManaUI(); saveData(); }
-        function updateManaUI() {
-            const percent = (state.mana / 2000) * 100;
-            document.getElementById('mana-fill').style.width = percent + "%";
-            document.getElementById('mana-text').innerText = state.mana + " / 2000 ml";
+
+        function getMoonPhase() {
+            const date = new Date();
+            let y = date.getFullYear(), m = date.getMonth() + 1, d = date.getDate();
+            if (m < 3) { y--; m += 12; }
+            let jd = (365.25 * y) + (30.6 * m) + d - 694039.09;
+            jd /= 29.5305882;
+            let phase = Math.round((jd - parseInt(jd)) * 29);
+            let res = {i: "🌕", n: "Full Moon", p: "Power: 100%"};
+            if (phase <= 1 || phase >= 29) res = {i: "🌑", n: "New Moon", p: "Power: 10%"};
+            else if (phase <= 7) res = {i: "🌒", n: "Waxing Crescent", p: "Power: 25%"};
+            else if (phase <= 14) res = {i: "🌓", n: "First Quarter", p: "Power: 50%"};
+            else if (phase <= 21) res = {i: "🌔", n: "Waxing Gibbous", p: "Power: 75%"};
+            document.getElementById('moon-icon').innerText = res.i;
+            document.getElementById('moon-phase-name').innerText = res.n;
+            document.getElementById('moon-power').innerText = res.p;
         }
 
-        // --- RANK LOGIC ---
-        function updateRank() {
-            let rank = "Novice Guardian";
-            if (state.starSeeds >= 10) rank = "Crystal Scout";
-            if (state.starSeeds >= 30) rank = "Star Knight";
-            if (state.starSeeds >= 50) rank = "Moon Princess";
-            document.getElementById('rank-badge').innerText = rank;
-        }
-
-        // --- TASK LOGIC ---
         function addTask() {
-            const text = document.getElementById('newTaskText').value;
-            const date = document.getElementById('newTaskDate').value;
-            const prio = document.getElementById('newTaskPrio').value;
-            if(!text) return;
-            state.tasks.push({ id: Date.now(), text, date: date || "No date", prio });
-            renderTasks(); saveData();
-            document.getElementById('newTaskText').value = '';
+            const t = document.getElementById('newTaskText').value, d = document.getElementById('newTaskDate').value, p = document.getElementById('newTaskPrio').value;
+            if(!t) return;
+            state.tasks.push({id: Date.now(), t, d: d||"No date", p});
+            document.getElementById('newTaskText').value=''; renderTasks(); saveData();
         }
         function renderTasks() {
-            const list = document.getElementById('task-list');
-            list.innerHTML = '';
-            state.tasks.forEach(t => {
-                const div = document.createElement('div');
-                div.className = 'item-row';
-                div.style.borderLeftColor = t.prio === 'high' ? '#ff4d6d' : (t.prio === 'med' ? '#ffb703' : '#2ec4b6');
-                div.innerHTML = `<div><b>${t.text}</b><br><small>📅 ${t.date}</small></div>
-                                 <button class="del-btn" onclick="completeQuest(${t.id})">🌟</button>`;
-                list.appendChild(div);
-            });
+            document.getElementById('task-list').innerHTML = state.tasks.map(x => `
+                <div class="item-row" style="border-left-color: ${x.p === 'high' ? '#ff4d6d' : (x.p === 'med' ? '#ffb703' : '#2ec4b6')}">
+                    <span><b>${x.t}</b><br><small>${x.d}</small></span>
+                    <button class="del-btn" onclick="completeTask(${x.id})">🌟</button>
+                </div>
+            `).join('');
             document.getElementById('star-count').innerText = state.starSeeds;
-            updateRank();
+            let r = "Guardian"; if(state.starSeeds > 10) r = "Scout"; if(state.starSeeds > 30) r = "Moon Princess";
+            document.getElementById('rank-badge').innerText = r;
         }
-        function completeQuest(id) {
-            state.tasks = state.tasks.filter(t => t.id !== id);
-            state.starSeeds += 1;
-            renderTasks(); saveData();
-        }
+        function completeTask(id) { state.tasks = state.tasks.filter(x => x.id !== id); state.starSeeds++; renderTasks(); saveData(); }
 
-        // --- MOOD & GRIMOIRE ---
-        function setMood(el, mood) {
-            document.querySelectorAll('.gem').forEach(g => g.classList.remove('selected'));
-            el.classList.add('selected');
-            state.currentMood = mood;
-            document.getElementById('mood-status').innerText = "Feeling: " + mood;
-            saveData();
-        }
-
-        // --- MEETING & ALERTS ---
         function addMeeting() {
-            const title = document.getElementById('mtgTitle').value;
-            const date = document.getElementById('mtgDate').value;
-            const time = document.getElementById('mtgTime').value;
-            if(!title || !date || !time) return;
-            state.meetings.push({ id: Date.now(), title, date, time, n15: false, nS: false });
-            renderMeetings(); saveData();
+            const t=document.getElementById('mtgTitle').value, d=document.getElementById('mtgDate').value, tm=document.getElementById('mtgTime').value;
+            if(t&&d&&tm){ state.meetings.push({id:Date.now(), t, d, tm, n15:false, nS:false}); renderMeetings(); saveData(); }
         }
-        function renderMeetings() {
-            const list = document.getElementById('meeting-list');
-            list.innerHTML = '';
-            state.meetings.forEach(m => {
-                const div = document.createElement('div');
-                div.className = 'item-row';
-                div.innerHTML = `<div><b>${m.title}</b><br><small>${m.date} @ ${m.time}</small></div>
-                                 <button class="del-btn" onclick="deleteMtg(${m.id})">×</button>`;
-                list.appendChild(div);
-            });
-        }
-        function deleteMtg(id) { state.meetings = state.meetings.filter(m => m.id !== id); renderMeetings(); saveData(); }
+        function renderMeetings() { document.getElementById('meeting-list').innerHTML = state.meetings.map(m=>`<div class="item-row"><span><b>${m.t}</b><br><small>${m.d} @ ${m.tm}</small></span><button class="del-btn" onclick="deleteMtg(${m.id})">×</button></div>`).join(''); }
+        function deleteMtg(id) { state.meetings = state.meetings.filter(x=>x.id!==id); renderMeetings(); saveData(); }
 
         setInterval(() => {
-            const now = new Date();
+            const n = new Date();
             state.meetings.forEach(m => {
-                const mtgDate = new Date(`${m.date}T${m.time}`);
-                const diff = (mtgDate - now) / 1000 / 60;
-                if (diff <= 15 && diff > 14 && !m.n15) { triggerAlert("Warning!", `"${m.title}" in 15m!`); m.n15 = true; saveData(); }
-                if (diff <= 0 && diff > -1 && !m.nS) { triggerAlert("On Time!", `"${m.title}" starts now! ✨`); m.nS = true; saveData(); }
+                const md = new Date(`${m.d}T${m.tm}`); const diff = (md - n)/1000/60;
+                if(diff <= 15 && diff > 14 && !m.n15) { triggerAlert("Warning!", m.t + " starts in 15m"); m.n15=true; saveData(); }
+                if(diff <= 0 && diff > -1 && !m.nS) { triggerAlert("Alert!", m.t + " starts now!"); m.nS=true; saveData(); }
             });
         }, 10000);
 
-        function triggerAlert(h, t) {
-            document.getElementById('alert-heading').innerText = h;
-            document.getElementById('alert-text').innerText = t;
-            document.getElementById('meeting-alert-overlay').style.display = 'flex';
-            document.getElementById('notif-sound').play();
-        }
-        function closeAlert() {
-            const audio = document.getElementById('notif-sound');
-            document.getElementById('meeting-alert-overlay').style.display = 'none';
-            audio.pause(); audio.currentTime = 0;
-        }
-
-        // --- CORE LOGIC ---
-        function saveData() { 
-            state.grimoireText = document.getElementById('grimoire').value;
-            localStorage.setItem('lifeOS_mega_v2', JSON.stringify(state)); 
-        }
+        function triggerAlert(h, t) { document.getElementById('alert-heading').innerText=h; document.getElementById('alert-text').innerText=t; document.getElementById('meeting-alert-overlay').style.display='flex'; document.getElementById('notif-sound').play(); }
+        function closeAlert() { document.getElementById('meeting-alert-overlay').style.display='none'; document.getElementById('notif-sound').pause(); }
+        
+        function addMana() { state.mana = Math.min(2000, state.mana + 250); updateMana(); saveData(); }
+        function updateMana() { document.getElementById('mana-fill').style.width = (state.mana/2000)*100 + "%"; document.getElementById('mana-text').innerText = state.mana + " / 2000ml"; }
+        function setMood(el, mood) { document.querySelectorAll('.gem').forEach(g=>g.classList.remove('selected')); el.classList.add('selected'); state.currentMood = mood; saveData(); }
+        function saveData() { localStorage.setItem('lifeOS_final_v1', JSON.stringify(state)); }
         function loadData() {
-            const saved = localStorage.getItem('lifeOS_mega_v2');
+            const saved = localStorage.getItem('lifeOS_final_v1');
             if(saved) state = JSON.parse(saved);
+            getMoonPhase(); renderTasks(); renderMeetings(); updateMana();
+            if(state.spotifyLink) { document.getElementById('spotify-link').value = state.spotifyLink; updateSpotify(); }
             document.getElementById('luna-tip').innerText = lunaTips[Math.floor(Math.random()*lunaTips.length)];
-            document.getElementById('grimoire').value = state.grimoireText || "";
-            renderTasks(); renderMeetings(); updateManaUI();
             if(state.darkMode) document.body.classList.add('dark-mode');
         }
 
-        function downloadBackup() { const dataStr = localStorage.getItem('lifeOS_mega_v2'); const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr); const link = document.createElement('a'); link.setAttribute('href', dataUri); link.setAttribute('download', 'lifeos_backup.json'); link.click(); }
-        function restoreBackup(event) { const file = event.target.files[0]; const reader = new FileReader(); reader.onload = function(e) { localStorage.setItem('lifeOS_mega_v2', e.target.result); location.reload(); }; reader.readAsText(file); }
+        function downloadBackup() { const s = localStorage.getItem('lifeOS_final_v1'); const b = new Blob([s], {type: 'text/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'lifeos_backup.json'; a.click(); }
+        function restoreBackup(e) { const f = e.target.files[0]; const r = new FileReader(); r.onload = (x) => { localStorage.setItem('lifeOS_final_v1', x.target.result); location.reload(); }; r.readAsText(f); }
         function toggleDarkMode() { state.darkMode = document.body.classList.toggle('dark-mode'); saveData(); }
-        function clearData() { if(confirm("Erase all Palace memories?")) { localStorage.clear(); location.reload(); }}
+        function clearData() { if(confirm("Clear Palace?")) { localStorage.clear(); location.reload(); } }
 
-        // Timer
-        let tS = 1500, tI = null;
-        function toggleTimer() { const btn = document.getElementById('timer-btn'); if(tI) { clearInterval(tI); tI = null; btn.innerText = "Start"; } else { btn.innerText = "Pause"; tI = setInterval(() => { tS--; const m = Math.floor(tS/60), s = tS%60; document.getElementById('timer-display').innerText = `${m}:${s.toString().padStart(2,'0')}`; if(tS <= 0) { clearInterval(tI); document.getElementById('notif-sound').play(); alert("Transformation Break!"); } }, 1000); } }
-        function resetTimer() { clearInterval(tI); tI = null; tS = 1500; document.getElementById('timer-display').innerText = "25:00"; }
+        let tSecs = 1500, tInt = null;
+        function toggleTimer() { const b = document.getElementById('timer-btn'); if(tInt) { clearInterval(tInt); tInt=null; b.innerText="Start"; } else { b.innerText="Pause"; tInt = setInterval(() => { tSecs--; const m = Math.floor(tSecs/60), s = tSecs%60; document.getElementById('timer-display').innerText = `${m}:${s.toString().padStart(2,'0')}`; if(tSecs <= 0) { clearInterval(tInt); document.getElementById('notif-sound').play(); alert("Break!"); } }, 1000); } }
+        function resetTimer() { clearInterval(tInt); tInt=null; tSecs=1500; document.getElementById('timer-display').innerText="25:00"; }
 
         window.onload = loadData;
     </script>
