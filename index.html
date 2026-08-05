@@ -24,7 +24,20 @@
             --accent-color: #ff9de2;
             --border-color: #4a3f52;
         }
+  /* CUSTOM CURSOR SYSTEM */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Quicksand', sans-serif;
+            /* Default Cursor: Pink Moon Rod */
+            cursor: url('https://ani.cursors-4u.net/anime/ani-12/ani1141.cur'), auto !important;
+        }
 
+        /* Hover Cursor: Sparkling Moon */
+        button, a, .card, .gem, .del-btn, input, select, .mana-progress {
+            cursor: url('https://ani.cursors-4u.net/anime/ani-12/ani1142.cur'), pointer !important;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
         body { background: var(--bg-gradient); min-height: 100vh; padding: 20px; color: var(--text-color); transition: 0.3s; }
         
