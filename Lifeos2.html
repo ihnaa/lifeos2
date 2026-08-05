@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌙 LifeOS: Crystal Power Pro</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap');
+
+        :root {
+            --bg-gradient: linear-gradient(135deg, #FFF6FB, #F3E8FF, #EAF7FF);
+            --card-bg: rgba(255, 255, 255, 0.75);
+            --text-color: #444;
+            --accent-color: #d46fb8;
+            --border-color: #FFD7EE;
+            --btn-grad: linear-gradient(90deg, #FFB6D9, #CDB4FF);
+            --btn-hover: linear-gradient(90deg, #FFD56F, #FFB6D9);
+        }
+
+        .dark-mode {
+            --bg-gradient: linear-gradient(135deg, #2d1b2d, #1a1a2e, #16213e);
+            --card-bg: rgba(40, 40, 60, 0.85);
+            --text-color: #f0f0f0;
+            --accent-color: #ff9de2;
+            --border-color: #4a3f52;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
+        body { background: var(--bg-gradient); min-height: 100vh; padding: 20px; color: var(--text-color); transition: 0.3s; }
+        
+        h1 { text-align: center; font-size: 40px; color: var(--accent-color); margin-bottom: 20px; text-shadow: 2px 2px white; }
+
+        .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 20px; }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 20px;
+            border: 3px solid var(--border-color);
+            box-shadow: 0 10px 25px rgba(255, 192, 203, .15);
+            transition: transform 0.3s ease;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            color: white;
+            background: var(--btn-grad);
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background: var(--btn-hover);
+            transform: scale(1.08);
+            box-shadow: 0 6px 15px rgba(255, 213, 111, 0.5);
+            color: #5e35b1;
+        }
+
+        input, select {
+            padding: 10px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            outline: none;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .item-row {
+            background: white;
+            padding: 12px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        /* NOTIFICATION OVERLAY */
+        #meeting-alert-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(45deg, #ff9de2, #CDB4FF, #FFD56F);
+            background-size: 400% 400%;
+            animation: gradientBG 5s ease infinite;
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .sparkle { position: absolute; font-size: 30px; animation: blink 1.5s infinite; pointer-events: none; }
+        @keyframes blink { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: 1; transform: scale(1.2); } }
+
+        .alert-content h2 { font-size: 3.5rem; text-shadow: 0 0 20px rgba(255,255,255,0.8); margin-bottom: 10px; }
+        .alert-content p { font-size: 1.8rem; margin-bottom: 30px; font-weight: bold; }
+
+        .alert-btn {
+            background: white !important;
+            color: #d46fb8 !important;
+            font-size: 1.5rem !important;
+            padding: 20px 60px !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
+        }
+
+        .del-btn { background: none; color: #ff78a7; box-shadow: none; padding: 0; font-size: 20px; }
+        .timer { font-size: 40px; text-align: center; color: var(--accent-color); margin: 10px 0; }
+        .progress { width: 100%; height: 15px; background: #eee; border-radius: 50px; overflow: hidden; margin: 10px 0; }
+        .fill { height: 100%; background: var(--btn-hover); transition: 0.5s; }
+    </style>
+</head>
+<body oninput="saveData()">
+
+    <h1 id="main-title" contenteditable="true">🌙 LifeOS: Crystal Power Pro ✨</h1>
+
+    <div class="container">
+
+        <!-- MEETINGS -->
+        <div class="card">
+            <h2>📅 Crystal Meetings</h2>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+                <input type="text" id="mtgTitle" placeholder="Meeting Purpose...">
+                <div style="display:flex; gap:5px;">
+                    <input type="date" id="mtgDate" style="flex:1;">
+                    <input type="time" id="mtgTime" style="flex:1;">
+                </div>
+                <button onclick="addMeeting()">🎀 Schedule Magic</button>
+            </div>
+            <div id="meeting-list" style="margin-top:20px;"></div>
+        </div>
+
+        <!-- TASKS -->
+        <div class="card" style="grid-row: span 2;">
+            <h2>✅ Quest Scroll</h2>
+            <div style="background: rgba(255,255,255,0.4); padding: 15px; border-radius: 20px; display: flex; flex-direction: column; gap: 8px; margin-bottom:15px;">
+                <input type="text" id="newTaskText" placeholder="New quest name...">
+                <div style="display:flex; gap:5px;">
+                    <input type="date" id="newTaskDate" style="flex:1;">
+                    <select id="newTaskPrio">
+                        <option value="low">Low</option>
+                        <option value="med" selected>Med</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <button onclick="addTask()">✨ Add Task</button>
+            </div>
+            <div id="task-list"></div>
+        </div>
+
+        <!-- GOAL -->
+        <div class="card">
+            <h2>🎯 Heart Goal</h2>
+            <p id="goal-name" contenteditable="true" style="font-weight:bold;">Master the Cosmic Arts</p>
+            <div onclick="editGoal()" style="cursor:pointer;">
+                <div class="progress"><div id="goal-fill" class="fill"></div></div>
+                <p id="goal-label" style="text-align: right; font-size: 0.8rem;">0% Complete</p>
+            </div>
+        </div>
+
+        <!-- EXPENSES -->
+        <div class="card">
+            <h2>💰 Treasury</h2>
+            <div id="expense-list"></div>
+            <h3 style="margin-top:15px; border-top: 1px solid #ddd; padding-top:10px;">Total: ₱<span id="total-amount">0</span></h3>
+            <button onclick="addExpense()">🪙 Record Spending</button>
+        </div>
+
+        <!-- POMODORO -->
+        <div class="card">
+            <h2>⏰ Crystal Timer</h2>
+            <div class="timer" id="timer-display">25:00</div>
+            <div style="text-align:center;">
+                <button onclick="toggleTimer()" id="timer-btn">Start</button>
+                <button onclick="resetTimer()">Reset</button>
+            </div>
+        </div>
+
+        <!-- SETTINGS -->
+        <div class="card">
+            <h2>⚙ Palace Controls</h2>
+            <button onclick="toggleDarkMode()" style="width:100%; margin-bottom:10px;">🌙 Night Mode</button>
+            <button onclick="clearData()" style="width:100%; background:#ffb3c6;">🗑 Reset Memories</button>
+        </div>
+    </div>
+
+<div class="footer">
+
+✨ "Believe in yourself and your dreams." ✨
+
+</div>
+
+    <!-- NOTIFICATION OVERLAY -->
+    <div id="meeting-alert-overlay">
+        <div class="alert-content">
+            <div class="sparkle" style="top:15%; left:15%;">✨</div>
+            <div class="sparkle" style="top:25%; right:20%;">⭐</div>
+            <div class="sparkle" style="bottom:20%; left:30%;">✦</div>
+            <h2 id="alert-heading">Crystal Power Alert!</h2>
+            <p id="alert-text">You have a meeting soon!</p>
+            <button class="alert-btn" onclick="closeAlert()">Got it! 🌙</button>
+        </div>
+    </div>
+
+    <!-- AUDIO -->
+    <audio id="notif-sound" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3" loop></audio>
+
+    <script>
+        let state = { meetings: [], tasks: [], expenses: [], goalPercent: 50, darkMode: false };
+
+        function addMeeting() {
+            const title = document.getElementById('mtgTitle').value;
+            const date = document.getElementById('mtgDate').value;
+            const time = document.getElementById('mtgTime').value;
+            if(!title || !date || !time) return;
+
+            state.meetings.push({ 
+                id: Date.now(), 
+                title, 
+                date, 
+                time, 
+                notified15m: false, 
+                notifiedStart: false 
+            });
+            state.meetings.sort((a,b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`));
+            renderMeetings();
+            saveData();
+            document.getElementById('mtgTitle').value = '';
+        }
+
+        function renderMeetings() {
+            const list = document.getElementById('meeting-list');
+            list.innerHTML = '';
+            state.meetings.forEach(m => {
+                const div = document.createElement('div');
+                div.className = 'item-row';
+                div.innerHTML = `<div><b>${m.title}</b><br><small>📅 ${m.date} @ ${m.time}</small></div>
+                                 <button class="del-btn" onclick="deleteMtg(${m.id})">×</button>`;
+                list.appendChild(div);
+            });
+        }
+
+        function deleteMtg(id) { state.meetings = state.meetings.filter(m => m.id !== id); renderMeetings(); saveData(); }
+
+        // --- DUAL ALERT ENGINE ---
+        setInterval(() => {
+            const now = new Date();
+            state.meetings.forEach(m => {
+                const mtgDate = new Date(`${m.date}T${m.time}`);
+                const diff = (mtgDate - now) / 1000 / 60; // difference in minutes
+
+                // 1. 15-Minute Warning
+                if (diff <= 15 && diff > 14 && !m.notified15m) {
+                    triggerAlert(m.title, "15-Minute Warning!", `"${m.title}" starts in 15 minutes!`);
+                    m.notified15m = true;
+                    saveData();
+                }
+
+                // 2. Start Time Alert
+                if (diff <= 0 && diff > -1 && !m.notifiedStart) {
+                    triggerAlert(m.title, "Meeting is Starting!", `"${m.title}" is starting RIGHT NOW! ✨`);
+                    m.notifiedStart = true;
+                    saveData();
+                }
+            });
+        }, 5000); // Check every 5 seconds
+
+        function triggerAlert(title, heading, text) {
+            document.getElementById('alert-heading').innerText = heading;
+            document.getElementById('alert-text').innerText = text;
+            document.getElementById('meeting-alert-overlay').style.display = 'flex';
+            document.getElementById('notif-sound').play(); 
+        }
+
+        function closeAlert() {
+            const audio = document.getElementById('notif-sound');
+            document.getElementById('meeting-alert-overlay').style.display = 'none';
+            audio.pause();
+            audio.currentTime = 0; 
+        }
+
+        // --- TASKS, EXPENSES, CORE ---
+        function addTask() {
+            const text = document.getElementById('newTaskText').value;
+            const date = document.getElementById('newTaskDate').value;
+            const prio = document.getElementById('newTaskPrio').value;
+            if(!text) return;
+            state.tasks.push({ id: Date.now(), text, date: date || "No date", prio });
+            renderTasks(); saveData();
+            document.getElementById('newTaskText').value = '';
+        }
+
+        function renderTasks() {
+            const list = document.getElementById('task-list');
+            list.innerHTML = '';
+            state.tasks.forEach(t => {
+                const div = document.createElement('div');
+                div.className = 'item-row';
+                div.style.borderLeftColor = t.prio === 'high' ? '#ff4d6d' : (t.prio === 'med' ? '#ffb703' : '#2ec4b6');
+                div.innerHTML = `<div><b>${t.text}</b><br><small>📅 ${t.date}</small></div>
+                                 <button class="del-btn" onclick="deleteTask(${t.id})">×</button>`;
+                list.appendChild(div);
+            });
+        }
+        function deleteTask(id) { state.tasks = state.tasks.filter(t => t.id !== id); renderTasks(); saveData(); }
+
+        function addExpense() { state.expenses.push({name:"New Item", price:0}); renderExpenses(); saveData(); }
+        function renderExpenses() {
+            const list = document.getElementById('expense-list');
+            list.innerHTML = '';
+            let total = 0;
+            state.expenses.forEach((e, i) => {
+                const div = document.createElement('div');
+                div.className = 'item-row';
+                div.innerHTML = `<span contenteditable="true" onblur="updateExp(${i},'n',this.innerText)">${e.name}</span>
+                                 <span>₱<span contenteditable="true" onblur="updateExp(${i},'p',this.innerText)">${e.price}</span>
+                                 <button class="del-btn" onclick="state.expenses.splice(${i},1); renderExpenses(); saveData();">×</button></span>`;
+                list.appendChild(div);
+                total += parseFloat(e.price) || 0;
+            });
+            document.getElementById('total-amount').innerText = total.toLocaleString();
+        }
+        function updateExp(i, type, val) {
+            if(type==='n') state.expenses[i].name = val; else state.expenses[i].price = val;
+            renderExpenses(); saveData();
+        }
+
+        function saveData() { localStorage.setItem('lifeOS_final_dual', JSON.stringify(state)); }
+        function loadData() {
+            const saved = localStorage.getItem('lifeOS_final_dual');
+            if(saved) state = JSON.parse(saved);
+            renderMeetings(); renderTasks(); renderExpenses();
+            document.getElementById('goal-fill').style.width = state.goalPercent + '%';
+            document.getElementById('goal-label').innerText = state.goalPercent + '% Complete';
+            if(state.darkMode) document.body.classList.add('dark-mode');
+        }
+        function editGoal() {
+            let val = prompt("Goal %:", state.goalPercent);
+            if(val) { state.goalPercent = val; loadData(); saveData(); }
+        }
+        function toggleDarkMode() { state.darkMode = document.body.classList.toggle('dark-mode'); saveData(); }
+        function clearData() { if(confirm("Clear OS?")) { localStorage.clear(); location.reload(); }}
+
+        // --- TIMER ---
+        let timerSecs = 1500, timerInt = null;
+        function toggleTimer() {
+            const btn = document.getElementById('timer-btn');
+            if(timerInt) { clearInterval(timerInt); timerInt = null; btn.innerText = "Start"; }
+            else { btn.innerText = "Pause"; timerInt = setInterval(() => {
+                timerSecs--;
+                const m = Math.floor(timerSecs/60), s = timerSecs%60;
+                document.getElementById('timer-display').innerText = `${m}:${s.toString().padStart(2,'0')}`;
+                if(timerSecs <= 0) { clearInterval(timerInt); document.getElementById('notif-sound').play(); alert("Break!"); }
+            }, 1000); }
+        }
+        function resetTimer() { clearInterval(timerInt); timerInt = null; timerSecs = 1500; document.getElementById('timer-display').innerText = "25:00"; }
+
+        window.onload = loadData;
+    </script>
+</body>
+</html>
