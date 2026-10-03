@@ -1,9 +1,11 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🌙 Ultimate Crystal Palace</title>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap');
 
@@ -27,357 +29,3047 @@
             --btn-grad: linear-gradient(90deg, #6a11cb, #2575fc);
         }
 
-        /* --- MAGIC STAR CURSOR --- */
-        * { 
-            margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; 
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23ffd54f" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>'), auto !important;
+        /* ================================
+           GLOBAL
+        ================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Quicksand', sans-serif;
+
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23ffd54f" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>'),
+            auto !important;
         }
 
-        button, .gem, .del-btn, .calendar-day, input, select, textarea {
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="%23ff80ab" d="M16 4l2 5 5 1-4 4 1 5-4-3-4 3 1-5-4-4 5-1z"/><rect x="15" y="18" width="2" height="12" fill="%23f06292"/></svg>'), pointer !important;
+        button,
+        .gem,
+        .del-btn,
+        .calendar-day,
+        input,
+        select,
+        textarea {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="%23ff80ab" d="M16 4l2 5 5 1-4 4 1 5-4-3-4 3 1-5-4-4 5-1z"/><rect x="15" y="18" width="2" height="12" fill="%23f06292"/></svg>'),
+            pointer !important;
         }
 
-        body { 
-            background: var(--bg-gradient); background-attachment: fixed; min-height: 100vh; padding: 30px; color: var(--text-color); transition: 0.5s ease all;
+        body {
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 30px;
+            color: var(--text-color);
+            transition: 0.5s ease all;
         }
 
-        h1 { text-align: center; font-size: 45px; color: var(--accent-color); text-shadow: 2px 2px rgba(255,255,255,0.3); margin-bottom: 30px; }
+        h1 {
+            text-align: center;
+            font-size: 45px;
+            color: var(--accent-color);
+            text-shadow: 2px 2px rgba(255,255,255,0.3);
+            margin-bottom: 30px;
+        }
 
-        /* --- 3-COLUMN GRID LAYOUT --- */
-        .container { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr 1fr; 
-            gap: 25px; 
+        /* ================================
+           MAIN GRID
+        ================================= */
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 25px;
             max-width: 1600px;
             margin: 0 auto;
         }
 
-        @media (max-width: 1200px) { .container { grid-template-columns: 1fr; } }
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
 
         .card {
-            background: var(--card-bg); backdrop-filter: blur(15px); border-radius: 40px; padding: 25px; border: 2px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 15px;
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 40px;
+            padding: 25px;
+            border: 2px solid var(--border-color);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        /* --- BOXES --- */
+        /* ================================
+           BOXES
+        ================================= */
+
         .magical-box {
-            background: var(--section-bg); border: 2px solid var(--border-color); padding: 20px; border-radius: 30px; margin-bottom: 10px;
+            background: var(--section-bg);
+            border: 2px solid var(--border-color);
+            padding: 20px;
+            border-radius: 30px;
+            margin-bottom: 10px;
         }
 
-        /* --- CALENDAR --- */
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
-        .calendar-day-head { font-weight: bold; font-size: 0.8rem; color: var(--accent-color); padding: 5px 0; }
-        .calendar-day { padding: 12px 0; border-radius: 15px; font-size: 0.9rem; background: rgba(255,255,255,0.3); transition: 0.3s; position: relative; }
-        .calendar-day:hover { background: var(--accent-color); color: white; }
-        .calendar-day.today { border: 3px solid var(--accent-color); font-weight: bold; }
-        .calendar-day.has-event::after { content: "✨"; position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); font-size: 0.7rem; }
+        /* ================================
+           CALENDAR
+        ================================= */
 
-        /* --- VITALITY: BIGGER --- */
-        #moon-icon { font-size: 70px; display: block; filter: drop-shadow(0 0 10px gold); text-align: center; margin: 0 auto; }
-        .gem-row { display: flex; justify-content: center; gap: 15px; margin-top: 10px; }
-        .gem-unit { display: flex; flex-direction: column; align-items: center; font-size: 0.8rem; font-weight: bold; color: var(--accent-color); }
-        .gem { width: 60px; height: 60px; border-radius: 50% 50% 20% 20%; border: 3px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: 0.3s; margin-bottom: 5px; }
-        .gem.selected { border: 4px solid gold; transform: scale(1.1); box-shadow: 0 0 20px gold; }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            text-align: center;
+        }
 
-        /* --- UI ELEMENTS --- */
+        .calendar-day-head {
+            font-weight: bold;
+            font-size: 0.8rem;
+            color: var(--accent-color);
+            padding: 5px 0;
+        }
+
+        .calendar-day {
+            padding: 12px 0;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            background: rgba(255,255,255,0.3);
+            transition: 0.3s;
+            position: relative;
+            min-height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .calendar-day:hover {
+            background: var(--accent-color);
+            color: white;
+            transform: scale(1.04);
+        }
+
+        .calendar-day.today {
+            border: 3px solid var(--accent-color);
+            font-weight: bold;
+        }
+
+        .calendar-day.has-event::after {
+            content: "✨";
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+        }
+
+        .calendar-day.has-completed::after {
+            content: "🌟";
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+        }
+
+        .calendar-day.has-pending::after {
+            content: "✨";
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+        }
+
+        .calendar-day.has-both::after {
+            content: "🌟✨";
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.65rem;
+        }
+
+        .calendar-day.completed {
+            opacity: 0.7;
+        }
+
+        .calendar-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .calendar-navigation button {
+            padding: 8px 15px;
+            font-size: 0.8rem;
+        }
+
+        .calendar-star-history {
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        /* ================================
+           VITALITY
+        ================================= */
+
+        #moon-icon {
+            font-size: 70px;
+            display: block;
+            filter: drop-shadow(0 0 10px gold);
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        .gem-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .gem-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .gem {
+            width: 60px;
+            height: 60px;
+            border-radius: 50% 50% 20% 20%;
+            border: 3px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: 0.3s;
+            margin-bottom: 5px;
+        }
+
+        .gem.selected {
+            border: 4px solid gold;
+            transform: scale(1.1);
+            box-shadow: 0 0 20px gold;
+        }
+
+        /* ================================
+           ITEMS
+        ================================= */
+
         .item-row {
-            background: var(--card-bg); padding: 15px 20px; border-radius: 20px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-left: 10px solid var(--accent-color); color: var(--text-color); box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            background: var(--card-bg);
+            padding: 15px 20px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 10px solid var(--accent-color);
+            color: var(--text-color);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            gap: 10px;
         }
-        button { padding: 12px 25px; border: none; border-radius: 50px; color: white; background: var(--btn-grad); font-weight: bold; transition: 0.3s; }
-        button:hover { transform: scale(1.05); filter: brightness(1.1); }
-        input, select { padding: 12px; border-radius: 15px; border: 2px solid var(--border-color); width: 100%; outline: none; background: var(--card-bg); color: var(--text-color); }
-        .timer { font-size: 70px; text-align: center; color: var(--accent-color); font-weight: bold; }
-        #rank-badge { display: inline-block; padding: 10px 25px; border-radius: 50px; font-weight: bold; color: white; margin-top: 15px; }
 
-        /* --- MODAL --- */
-        #day-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 500px; background: var(--card-bg); border: 3px solid var(--accent-color); border-radius: 40px; padding: 30px; z-index: 20000; display: none; backdrop-filter: blur(20px); }
-        #modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 19999; display: none; }
+        .quest-completed {
+            opacity: 0.6;
+        }
 
-        #alert-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(45deg, #ff9de2, #cdb4ff, #ffd56f); z-index: 10000; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; }
+        .quest-completed b {
+            text-decoration: line-through;
+        }
+
+        /* ================================
+           BUTTONS / INPUTS
+        ================================= */
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            color: white;
+            background: var(--btn-grad);
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        input,
+        select {
+            padding: 12px;
+            border-radius: 15px;
+            border: 2px solid var(--border-color);
+            width: 100%;
+            outline: none;
+            background: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        .timer {
+            font-size: 70px;
+            text-align: center;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        #rank-badge {
+            display: inline-block;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            color: white;
+            margin-top: 15px;
+        }
+
+        /* ================================
+           MODAL
+        ================================= */
+
+        #day-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 500px;
+            background: var(--card-bg);
+            border: 3px solid var(--accent-color);
+            border-radius: 40px;
+            padding: 30px;
+            z-index: 20000;
+            display: none;
+            backdrop-filter: blur(20px);
+        }
+
+        #modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 19999;
+            display: none;
+        }
+
+        /* ================================
+           ALERT
+        ================================= */
+
+        #alert-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ff9de2, #cdb4ff, #ffd56f);
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+
+        /* ================================
+           RESPONSIVE
+        ================================= */
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 12px;
+            }
+
+            h1 {
+                font-size: 30px;
+            }
+
+            .card {
+                padding: 18px;
+                border-radius: 25px;
+            }
+
+            .gem-row {
+                gap: 5px;
+            }
+
+            .gem {
+                width: 45px;
+                height: 45px;
+            }
+
+            .timer {
+                font-size: 50px;
+            }
+
+            .calendar-day {
+                min-height: 38px;
+                padding: 8px 0;
+            }
+        }
     </style>
 </head>
+
 <body oninput="saveData()">
 
     <h1>🌙 Crystal Power Palace ✨</h1>
 
     <div class="container">
 
-        <!-- ROW 1 LEFT: CALENDAR -->
+        <!-- ==================================================
+             CALENDAR
+        =================================================== -->
+
         <div class="card">
-            <h2 id="calendar-month">📅 Calendar</h2>
-            <div class="magical-box">
-                <div class="calendar-grid" id="calendar-body"></div>
+
+            <div class="calendar-navigation">
+
+                <button onclick="changeCalendarMonth(-1)">
+                    ◀
+                </button>
+
+                <h2 id="calendar-month">
+                    📅 Calendar
+                </h2>
+
+                <button onclick="changeCalendarMonth(1)">
+                    ▶
+                </button>
+
             </div>
-            <p style="text-align: center; font-size: 0.8rem; font-weight: bold; color: var(--accent-color);">✨ Click a date to see logs!</p>
+
+            <div class="magical-box">
+
+                <div
+                    class="calendar-grid"
+                    id="calendar-body">
+                </div>
+
+            </div>
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                gap:10px;
+            ">
+
+                <button
+                    onclick="goToCurrentMonth()"
+                    style="
+                        font-size:0.75rem;
+                        padding:8px 15px;
+                    ">
+                    🌙 Current Month
+                </button>
+
+                <span
+                    id="calendar-star-history"
+                    class="calendar-star-history">
+                </span>
+
+            </div>
+
+            <p style="
+                text-align:center;
+                font-size:0.8rem;
+                font-weight:bold;
+                color:var(--accent-color);
+            ">
+                ✨ Click a date to see logs!
+            </p>
+
         </div>
 
-        <!-- ROW 1 CENTER: MEETINGS -->
+
+        <!-- ==================================================
+             MEETINGS
+        =================================================== -->
+
         <div class="card">
+
             <h2>📅 Crystal Meetings</h2>
+
             <div class="magical-box">
-                <input type="text" id="mtgTitle" placeholder="Meeting Purpose...">
-                <div style="display:flex; gap:10px; margin-top:10px;">
-                    <input type="date" id="mtgDate">
-                    <input type="time" id="mtgTime">
+
+                <input
+                    type="text"
+                    id="mtgTitle"
+                    placeholder="Meeting Purpose...">
+
+                <div style="
+                    display:flex;
+                    gap:10px;
+                    margin-top:10px;
+                ">
+
+                    <input
+                        type="date"
+                        id="mtgDate">
+
+                    <input
+                        type="time"
+                        id="mtgTime">
+
                 </div>
-                <button onclick="addMeeting()" style="width:100%; margin-top:10px;">🎀 Schedule Magic</button>
+
+                <button
+                    onclick="addMeeting()"
+                    style="
+                        width:100%;
+                        margin-top:10px;
+                    ">
+                    🎀 Schedule Magic
+                </button>
+
             </div>
-            <div id="meeting-list" style="overflow-y:auto; max-height:300px;"></div>
+
+            <div
+                id="meeting-list"
+                style="
+                    overflow-y:auto;
+                    max-height:300px;
+                ">
+            </div>
+
         </div>
 
-        <!-- ROW 1 RIGHT: QUEST SCROLL -->
+
+        <!-- ==================================================
+             QUEST SCROLL
+        =================================================== -->
+
         <div class="card">
+
             <h2>✅ Quest Scroll</h2>
+
             <div class="magical-box">
-                <input type="text" id="newTaskText" placeholder="New quest name...">
-                <div style="display:flex; gap:10px; margin: 10px 0;">
-                    <input type="date" id="newTaskDate">
+
+                <input
+                    type="text"
+                    id="newTaskText"
+                    placeholder="New quest name...">
+
+                <div style="
+                    display:flex;
+                    gap:10px;
+                    margin:10px 0;
+                ">
+
+                    <input
+                        type="date"
+                        id="newTaskDate">
+
                     <select id="newTaskPrio">
-                        <option value="low">Low</option>
-                        <option value="med" selected>Medium</option>
-                        <option value="high">High</option>
+
+                        <option value="low">
+                            Low
+                        </option>
+
+                        <option
+                            value="med"
+                            selected>
+                            Medium
+                        </option>
+
+                        <option value="high">
+                            High
+                        </option>
+
                     </select>
+
                 </div>
-                <button onclick="addTask()" style="width:100%;">✨ Add Quest</button>
+
+                <button
+                    onclick="addTask()"
+                    style="width:100%;">
+                    ✨ Add Quest
+                </button>
+
             </div>
-            <div id="task-list" style="overflow-y:auto; max-height:250px;"></div>
+
+            <div
+                id="task-list"
+                style="
+                    overflow-y:auto;
+                    max-height:250px;
+                ">
+            </div>
+
             <div style="text-align:center;">
-                <p style="font-weight:bold;">🌟 Star Seeds: <span id="star-count">0</span></p>
-                <span id="rank-badge">Novice Guardian</span>
+
+                <p style="font-weight:bold;">
+                    🌟 Star Seeds:
+                    <span id="star-count">0</span>
+                </p>
+
+                <span id="rank-badge">
+                    Novice Guardian
+                </span>
+
             </div>
+
         </div>
 
-        <!-- ROW 2 LEFT: VITALITY + THEME -->
-        <div style="display:flex; flex-direction:column; gap:25px;">
+
+        <!-- ==================================================
+             VITALITY + THEME
+        =================================================== -->
+
+        <div style="
+            display:flex;
+            flex-direction:column;
+            gap:25px;
+        ">
+
             <!-- VITALITY -->
+
             <div class="card">
+
                 <h2>💖 Magical Vitality</h2>
+
                 <div class="magical-box">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-weight:bold;">💧 Mana Reservoir</span>
-                        <button onclick="resetMana()" style="background:#ef9a9a; font-size:0.6rem; padding: 4px 10px;">Purify 🧹</button>
+
+                    <div style="
+                        display:flex;
+                        justify-content:space-between;
+                        align-items:center;
+                    ">
+
+                        <span style="font-weight:bold;">
+                            💧 Mana Reservoir
+                        </span>
+
+                        <button
+                            onclick="resetMana()"
+                            style="
+                                background:#ef9a9a;
+                                font-size:0.6rem;
+                                padding:4px 10px;
+                            ">
+                            Purify 🧹
+                        </button>
+
                     </div>
-                    <div style="width:100%; height:20px; background:#eee; border-radius:50px; overflow:hidden; margin:10px 0; border:1px solid #ddd;">
-                        <div id="mana-fill" style="height:100%; width:0%; background:linear-gradient(90deg, #b4e4ff, #81d4fa); transition:0.5s;"></div>
-                    </div>
-                    <div style="display:flex; justify-content: space-between; align-items:center;">
-                        <button onclick="addMana()" style="font-size: 0.75rem;">➕ Recharge</button>
-                        <span id="mana-text" style="font-weight:bold; font-size: 0.9rem;">0 / 2000ml</span>
-                    </div>
-                </div>
-                <div class="magical-box" style="display:flex; justify-content:space-around; align-items:center;">
-                    <div><span id="moon-icon">🌑</span><p id="moon-phase-name" style="font-weight:bold; font-size:0.8rem; color:var(--accent-color); text-align:center;"></p></div>
-                    <div style="text-align:center;">
-                        <p style="font-size:0.8rem; font-weight:bold;">Soul Gem:</p>
-                        <div class="gem-row">
-                            <div class="gem-unit"><div class="gem" style="background:#ffb3c6;" onclick="setMood(this, 'Happy')"></div><span>Happy</span></div>
-                            <div class="gem-unit"><div class="gem" style="background:#b4e4ff;" onclick="setMood(this, 'Calm')"></div><span>Calm</span></div>
-                            <div class="gem-unit"><div class="gem" style="background:#ffd56f;" onclick="setMood(this, 'Active')"></div><span>Active</span></div>
-                            <div class="gem-unit"><div class="gem" style="background:#a0a0a0;" onclick="setMood(this, 'Tired')"></div><span>Tired</span></div>
+
+                    <div style="
+                        width:100%;
+                        height:20px;
+                        background:#eee;
+                        border-radius:50px;
+                        overflow:hidden;
+                        margin:10px 0;
+                        border:1px solid #ddd;
+                    ">
+
+                        <div
+                            id="mana-fill"
+                            style="
+                                height:100%;
+                                width:0%;
+                                background:linear-gradient(
+                                    90deg,
+                                    #b4e4ff,
+                                    #81d4fa
+                                );
+                                transition:0.5s;
+                            ">
                         </div>
+
                     </div>
+
+                    <div style="
+                        display:flex;
+                        justify-content:space-between;
+                        align-items:center;
+                    ">
+
+                        <button
+                            onclick="addMana()"
+                            style="font-size:0.75rem;">
+                            ➕ Recharge
+                        </button>
+
+                        <span
+                            id="mana-text"
+                            style="
+                                font-weight:bold;
+                                font-size:0.9rem;
+                            ">
+                            0 / 2000ml
+                        </span>
+
+                    </div>
+
                 </div>
-                <button onclick="logMagicalDay()" style="width:100%; margin-top:5px;">🌟 Log Energy Today 🌟</button>
-                <div id="daily-affirmation" style="text-align:center; font-style:italic; padding-top:15px; font-weight:bold;">"Believe in yourself."</div>
+
+
+                <div
+                    class="magical-box"
+                    style="
+                        display:flex;
+                        justify-content:space-around;
+                        align-items:center;
+                    ">
+
+                    <div>
+
+                        <span id="moon-icon">
+                            🌑
+                        </span>
+
+                        <p
+                            id="moon-phase-name"
+                            style="
+                                font-weight:bold;
+                                font-size:0.8rem;
+                                color:var(--accent-color);
+                                text-align:center;
+                            ">
+                        </p>
+
+                    </div>
+
+
+                    <div style="text-align:center;">
+
+                        <p style="
+                            font-size:0.8rem;
+                            font-weight:bold;
+                        ">
+                            Soul Gem:
+                        </p>
+
+                        <div class="gem-row">
+
+                            <div class="gem-unit">
+
+                                <div
+                                    class="gem"
+                                    style="background:#ffb3c6;"
+                                    onclick="setMood(this, 'Happy')">
+                                </div>
+
+                                <span>
+                                    Happy
+                                </span>
+
+                            </div>
+
+
+                            <div class="gem-unit">
+
+                                <div
+                                    class="gem"
+                                    style="background:#b4e4ff;"
+                                    onclick="setMood(this, 'Calm')">
+                                </div>
+
+                                <span>
+                                    Calm
+                                </span>
+
+                            </div>
+
+
+                            <div class="gem-unit">
+
+                                <div
+                                    class="gem"
+                                    style="background:#ffd56f;"
+                                    onclick="setMood(this, 'Active')">
+                                </div>
+
+                                <span>
+                                    Active
+                                </span>
+
+                            </div>
+
+
+                            <div class="gem-unit">
+
+                                <div
+                                    class="gem"
+                                    style="background:#a0a0a0;"
+                                    onclick="setMood(this, 'Tired')">
+                                </div>
+
+                                <span>
+                                    Tired
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <button
+                    onclick="logMagicalDay()"
+                    style="
+                        width:100%;
+                        margin-top:5px;
+                    ">
+                    🌟 Log Energy Today 🌟
+                </button>
+
+                <div
+                    id="daily-affirmation"
+                    style="
+                        text-align:center;
+                        font-style:italic;
+                        padding-top:15px;
+                        font-weight:bold;
+                    ">
+                    "Believe in yourself."
+                </div>
+
             </div>
+
+
             <!-- THEME -->
+
             <div class="card">
+
                 <h2>🎵 Guardian's Theme</h2>
-                <div class="magical-box" style="padding:10px;">
-                    <iframe src="https://open.spotify.com/embed/playlist/33EkgjUY2Pwbk6pzAKRX9q?utm_source=generator" width="100%" height="280" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" style="border-radius:25px;"></iframe>
+
+                <div
+                    class="magical-box"
+                    style="padding:10px;">
+
+                    <iframe
+                        src="https://open.spotify.com/embed/playlist/33EkgjUY2Pwbk6pzAKRX9q?utm_source=generator"
+                        width="100%"
+                        height="280"
+                        frameBorder="0"
+                        allowfullscreen=""
+                        allow="
+                            autoplay;
+                            clipboard-write;
+                            encrypted-media;
+                            fullscreen;
+                            picture-in-picture
+                        "
+                        loading="lazy"
+                        style="border-radius:25px;">
+                    </iframe>
+
                 </div>
+
             </div>
+
         </div>
 
-        <!-- ROW 2 CENTER: PALACE CONTROLS -->
+
+        <!-- ==================================================
+             PALACE CONTROLS
+        =================================================== -->
+
         <div class="card">
+
             <h2>⚙ Palace Controls</h2>
-            <div class="magical-box" style="display:flex; flex-direction:column; gap:12px;">
-                <button onclick="toggleDarkMode()" style="background:#6a4c93;">🌙 Toggle Night Mode</button>
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-                    <button onclick="downloadBackup()" style="background:#cdb4ff;">💾 Backup Scroll</button>
-                    <button onclick="document.getElementById('restoreFile').click()" style="background:#ffb6d9;">📖 Restore Magic</button>
+
+            <div
+                class="magical-box"
+                style="
+                    display:flex;
+                    flex-direction:column;
+                    gap:12px;
+                ">
+
+                <button
+                    onclick="toggleDarkMode()"
+                    style="background:#6a4c93;">
+                    🌙 Toggle Night Mode
+                </button>
+
+                <div style="
+                    display:grid;
+                    grid-template-columns:1fr 1fr;
+                    gap:12px;
+                ">
+
+                    <button
+                        onclick="downloadBackup()"
+                        style="background:#cdb4ff;">
+                        💾 Backup Scroll
+                    </button>
+
+                    <button
+                        onclick="document.getElementById('restoreFile').click()"
+                        style="background:#ffb6d9;">
+                        📖 Restore Magic
+                    </button>
+
                 </div>
-                <input type="file" id="restoreFile" style="display:none" onchange="restoreBackup(event)">
-                <button onclick="clearData()" style="background:#ffcdd2; color:#b71c1c;">🗑 Reset Memories</button>
+
+                <input
+                    type="file"
+                    id="restoreFile"
+                    style="display:none"
+                    onchange="restoreBackup(event)">
+
+                <button
+                    onclick="clearData()"
+                    style="
+                        background:#ffcdd2;
+                        color:#b71c1c;
+                    ">
+                    🗑 Reset Memories
+                </button>
+
             </div>
+
         </div>
 
-        <!-- ROW 2 RIGHT: TIMER -->
+
+        <!-- ==================================================
+             TIMER
+        =================================================== -->
+
         <div class="card">
+
             <h2>⏰ Crystal Timer</h2>
+
             <div class="magical-box">
-                <div class="timer" id="timer-display">25:00</div>
-                <div style="display:flex; gap:10px; justify-content:center; margin-top:15px;">
-                    <button onclick="toggleTimer()" id="timer-btn" style="flex:1;">Start</button>
-                    <button onclick="resetTimer()" style="background:#bbb; flex:1;">Reset</button>
+
+                <div
+                    class="timer"
+                    id="timer-display">
+                    25:00
                 </div>
-                <div style="display:flex; gap:8px; justify-content:center; margin-top:20px;">
-                    <button onclick="setBreak(5)" style="background:#b4e4ff; font-size:0.75rem;">5m Break</button>
-                    <button onclick="setBreak(15)" style="background:#cdb4ff; font-size:0.75rem;">15m Break</button>
+
+                <div style="
+                    display:flex;
+                    gap:10px;
+                    justify-content:center;
+                    margin-top:15px;
+                ">
+
+                    <button
+                        onclick="toggleTimer()"
+                        id="timer-btn"
+                        style="flex:1;">
+                        Start
+                    </button>
+
+                    <button
+                        onclick="resetTimer()"
+                        style="
+                            background:#bbb;
+                            flex:1;
+                        ">
+                        Reset
+                    </button>
+
                 </div>
+
+                <div style="
+                    display:flex;
+                    gap:8px;
+                    justify-content:center;
+                    margin-top:20px;
+                ">
+
+                    <button
+                        onclick="setBreak(5)"
+                        style="
+                            background:#b4e4ff;
+                            font-size:0.75rem;
+                        ">
+                        5m Break
+                    </button>
+
+                    <button
+                        onclick="setBreak(15)"
+                        style="
+                            background:#cdb4ff;
+                            font-size:0.75rem;
+                        ">
+                        15m Break
+                    </button>
+
+                </div>
+
             </div>
+
         </div>
 
     </div>
 
-    <!-- MODALS & ALERTS -->
-    <div id="modal-overlay" onclick="closeDayModal()"></div>
-    <div id="day-modal">
-        <h2 id="modal-date-title" style="color:var(--accent-color); margin-bottom:15px;">Moon Date</h2>
-        <div class="magical-box" id="modal-content" style="max-height: 300px; overflow-y: auto;"></div>
-        <button onclick="closeDayModal()" style="width:100%; margin-top:10px;">Close Scroll 🌙</button>
+
+    <!-- ==================================================
+         MODAL
+    =================================================== -->
+
+    <div
+        id="modal-overlay"
+        onclick="closeDayModal()">
     </div>
+
+    <div id="day-modal">
+
+        <h2
+            id="modal-date-title"
+            style="
+                color:var(--accent-color);
+                margin-bottom:15px;
+            ">
+            Moon Date
+        </h2>
+
+        <div
+            class="magical-box"
+            id="modal-content"
+            style="
+                max-height:300px;
+                overflow-y:auto;
+            ">
+        </div>
+
+        <button
+            onclick="closeDayModal()"
+            style="
+                width:100%;
+                margin-top:10px;
+            ">
+            Close Scroll 🌙
+        </button>
+
+    </div>
+
+
+    <!-- ==================================================
+         ALERT
+    =================================================== -->
 
     <div id="alert-overlay">
-        <h2 id="alert-heading" style="font-size:3.5rem; text-shadow:0 0 20px white; margin-top: 20vh;">Crystal Alert!</h2>
-        <p id="alert-text" style="font-size:2rem; margin:25px; font-weight:bold;"></p>
-        <button onclick="closeAlert()" style="background:white; color:#d46fb8; padding:25px 70px; font-size:1.8rem; border-radius:60px; font-weight:bold;">Got it! 🌙</button>
+
+        <h2
+            id="alert-heading"
+            style="
+                font-size:3.5rem;
+                text-shadow:0 0 20px white;
+                margin-top:20vh;
+            ">
+            Crystal Alert!
+        </h2>
+
+        <p
+            id="alert-text"
+            style="
+                font-size:2rem;
+                margin:25px;
+                font-weight:bold;
+            ">
+        </p>
+
+        <button
+            onclick="closeAlert()"
+            style="
+                background:white;
+                color:#d46fb8;
+                padding:25px 70px;
+                font-size:1.8rem;
+                border-radius:60px;
+                font-weight:bold;
+            ">
+            Got it! 🌙
+        </button>
+
     </div>
 
-    <audio id="notif-sound" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3" loop></audio>
+
+    <audio
+        id="notif-sound"
+        src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3"
+        loop>
+    </audio>
+
 
     <script>
-        let state = { meetings: [], tasks: [], starSeeds: 0, mana: 0, darkMode: false, currentMood: "", dailyLogs: {} };
-        const quotes = ["Trust in the magic of your heart.", "A Moon Princess never gives up!", "The stars are cheering for you!"];
-        const alertHeads = ["Crystal Power Alert!", "Moon Prism Power Alert!", "Starlight Alert!"];
 
-        function saveData() { localStorage.setItem('palace_os_vFinal_v2', JSON.stringify(state)); }
-        
+        /* ==================================================
+           STATE
+        =================================================== */
+
+        let state = {
+
+            meetings: [],
+
+            tasks: [],
+
+            /*
+             * Current month's Star Seeds
+             */
+            starSeeds: 0,
+
+            /*
+             * Historical monthly Star Seeds
+             *
+             * Example:
+             *
+             * {
+             *   "2026-09": 32,
+             *   "2026-10": 17
+             * }
+             */
+            monthlyStarSeeds: {},
+
+            /*
+             * Month currently associated with starSeeds
+             */
+            currentMonth: "",
+
+            mana: 0,
+
+            darkMode: false,
+
+            currentMood: "",
+
+            dailyLogs: {}
+        };
+
+
+        /*
+         * Calendar month currently being viewed.
+         */
+        let calendarViewDate = new Date();
+
+
+        const quotes = [
+            "Trust in the magic of your heart.",
+            "A Moon Princess never gives up!",
+            "The stars are cheering for you!"
+        ];
+
+
+        const alertHeads = [
+            "Crystal Power Alert!",
+            "Moon Prism Power Alert!",
+            "Starlight Alert!"
+        ];
+
+
+        /* ==================================================
+           MONTH FUNCTIONS
+        =================================================== */
+
+        function getMonthKey(date) {
+
+            return `${date.getFullYear()}-${String(
+                date.getMonth() + 1
+            ).padStart(2, '0')}`;
+
+        }
+
+
+        function getMonthName(monthKey) {
+
+            const [year, month] =
+                monthKey.split('-').map(Number);
+
+            return new Date(
+                year,
+                month - 1,
+                1
+            ).toLocaleString('default', {
+                month: 'long',
+                year: 'numeric'
+            });
+
+        }
+
+
+        function getStarSeedsForMonth(monthKey) {
+
+            /*
+             * Current month uses live counter.
+             */
+            if(monthKey === getMonthKey(new Date())) {
+
+                return state.starSeeds;
+
+            }
+
+            /*
+             * Previous months use stored history.
+             */
+            return state.monthlyStarSeeds[monthKey] || 0;
+
+        }
+
+
+        function handleMonthlyReset() {
+
+            const currentMonth =
+                getMonthKey(new Date());
+
+
+            /*
+             * Detect a new month.
+             */
+            if(state.currentMonth !== currentMonth) {
+
+                /*
+                 * Save previous month's final score.
+                 */
+                if(state.currentMonth) {
+
+                    state.monthlyStarSeeds[
+                        state.currentMonth
+                    ] = state.starSeeds;
+
+                }
+
+
+                /*
+                 * Move into new month.
+                 */
+                state.currentMonth =
+                    currentMonth;
+
+
+                /*
+                 * New month starts at zero.
+                 *
+                 * If this month already exists in history,
+                 * restore its saved value.
+                 */
+                state.starSeeds =
+                    state.monthlyStarSeeds[currentMonth] || 0;
+
+            }
+
+
+            /*
+             * Ensure current month exists.
+             */
+            if(
+                state.monthlyStarSeeds[currentMonth]
+                === undefined
+            ) {
+
+                state.monthlyStarSeeds[currentMonth] =
+                    state.starSeeds;
+
+            }
+
+        }
+
+
+        /* ==================================================
+           SAVE / LOAD
+        =================================================== */
+
+        function saveData() {
+
+            /*
+             * Always check if we entered a new month.
+             */
+            const currentMonth =
+                getMonthKey(new Date());
+
+
+            if(state.currentMonth !== currentMonth) {
+
+                if(state.currentMonth) {
+
+                    state.monthlyStarSeeds[
+                        state.currentMonth
+                    ] = state.starSeeds;
+
+                }
+
+
+                state.currentMonth =
+                    currentMonth;
+
+
+                state.starSeeds =
+                    state.monthlyStarSeeds[currentMonth] || 0;
+
+            }
+
+
+            /*
+             * Keep current month synchronized.
+             */
+            state.monthlyStarSeeds[currentMonth] =
+                state.starSeeds;
+
+
+            localStorage.setItem(
+                'palace_os_vFinal_v2',
+                JSON.stringify(state)
+            );
+
+        }
+
+
         function loadData() {
-            const saved = localStorage.getItem('palace_os_vFinal_v2');
+
+            const saved =
+                localStorage.getItem(
+                    'palace_os_vFinal_v2'
+                );
+
+
             if(saved) {
+
                 const p = JSON.parse(saved);
-                // Magic Sanitizer for backup restore
-                state.starSeeds = p.starSeeds || 0;
-                state.mana = p.mana || 0;
-                state.darkMode = p.darkMode || false;
-                state.dailyLogs = p.dailyLogs || {};
-                state.currentMood = p.currentMood || "";
-                state.meetings = (p.meetings || []).map(m => ({ title: m.title || m.t || "Meeting", date: m.date || m.d || "", time: m.time || m.tm || "", n15:false, nS:false }));
-                state.tasks = (p.tasks || []).map(t => ({ id: t.id || Date.now(), text: t.text || t.t || "Quest", date: t.date || t.d || "", prio: t.prio || "med" }));
+
+
+                state.starSeeds =
+                    p.starSeeds || 0;
+
+
+                state.monthlyStarSeeds =
+                    p.monthlyStarSeeds || {};
+
+
+                state.currentMonth =
+                    p.currentMonth || "";
+
+
+                state.mana =
+                    p.mana || 0;
+
+
+                state.darkMode =
+                    p.darkMode || false;
+
+
+                state.dailyLogs =
+                    p.dailyLogs || {};
+
+
+                state.currentMood =
+                    p.currentMood || "";
+
+
+                /*
+                 * Meetings
+                 */
+                state.meetings =
+                    (p.meetings || []).map(m => ({
+
+                        title:
+                            m.title ||
+                            m.t ||
+                            "Meeting",
+
+                        date:
+                            m.date ||
+                            m.d ||
+                            "",
+
+                        time:
+                            m.time ||
+                            m.tm ||
+                            "",
+
+                        n15:
+                            m.n15 || false,
+
+                        nS:
+                            m.nS || false
+
+                    }));
+
+
+                /*
+                 * Tasks
+                 *
+                 * This supports both:
+                 *
+                 * old tasks
+                 * and new completed tasks
+                 */
+                state.tasks =
+                    (p.tasks || []).map(t => ({
+
+                        id:
+                            t.id ||
+                            Date.now() +
+                            Math.random(),
+
+                        text:
+                            t.text ||
+                            t.t ||
+                            "Quest",
+
+                        date:
+                            t.date ||
+                            t.d ||
+                            "",
+
+                        prio:
+                            t.prio ||
+                            "med",
+
+                        completed:
+                            t.completed ||
+                            false,
+
+                        completedAt:
+                            t.completedAt ||
+                            null
+
+                    }));
+
             }
-            if(state.darkMode) document.body.classList.add('dark-mode');
-            document.getElementById('daily-affirmation').innerText = `"${quotes[Math.floor(Math.random()*quotes.length)]}"`;
-            renderCalendar(); renderTasks(); renderMeetings(); updateMana(); getMoonPhase();
+
+
+            /*
+             * Handle monthly reset.
+             */
+            handleMonthlyReset();
+
+
+            if(state.darkMode) {
+
+                document.body.classList.add(
+                    'dark-mode'
+                );
+
+            }
+
+
+            document.getElementById(
+                'daily-affirmation'
+            ).innerText =
+                `"${quotes[
+                    Math.floor(
+                        Math.random() *
+                        quotes.length
+                    )
+                ]}"`;
+
+
+            calendarViewDate =
+                new Date();
+
+
+            renderCalendar();
+
+            renderTasks();
+
+            renderMeetings();
+
+            updateMana();
+
+            getMoonPhase();
+
+            saveData();
+
         }
 
-        // --- CALENDAR LOGIC ---
+
+        /* ==================================================
+           CALENDAR
+        =================================================== */
+
         function renderCalendar() {
-            const body = document.getElementById('calendar-body');
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = now.getMonth();
-            document.getElementById('calendar-month').innerText = `📅 ${now.toLocaleString('default', { month: 'long' })} ${year}`;
-            const firstDay = new Date(year, month, 1).getDay();
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            const body =
+                document.getElementById(
+                    'calendar-body'
+                );
+
+
+            const year =
+                calendarViewDate.getFullYear();
+
+
+            const month =
+                calendarViewDate.getMonth();
+
+
+            const monthKey =
+                getMonthKey(calendarViewDate);
+
+
+            document.getElementById(
+                'calendar-month'
+            ).innerText =
+                `📅 ${calendarViewDate.toLocaleString(
+                    'default',
+                    {
+                        month: 'long'
+                    }
+                )} ${year}`;
+
+
+            const firstDay =
+                new Date(
+                    year,
+                    month,
+                    1
+                ).getDay();
+
+
+            const daysInMonth =
+                new Date(
+                    year,
+                    month + 1,
+                    0
+                ).getDate();
+
+
             body.innerHTML = '';
-            ['S','M','T','W','T','F','S'].forEach(h => body.innerHTML += `<div class="calendar-day-head">${h}</div>`);
-            for(let i=0; i<firstDay; i++) body.innerHTML += `<div></div>`;
-            for(let d=1; d<=daysInMonth; d++) {
-                const dStr = `${year}-${(month+1).toString().padStart(2,'0')}-${d.toString().padStart(2,'0')}`;
-                const hasE = state.meetings.some(m => m.date === dStr) || state.tasks.some(t => t.date === dStr);
-                const isT = d === now.getDate() ? 'today' : '';
-                body.innerHTML += `<div class="calendar-day ${isT} ${hasE?'has-event':''}" onclick="openDayModal('${dStr}')">${d}</div>`;
+
+
+            /*
+             * Weekdays
+             */
+            [
+                'S',
+                'M',
+                'T',
+                'W',
+                'T',
+                'F',
+                'S'
+            ].forEach(h => {
+
+                body.innerHTML += `
+                    <div class="calendar-day-head">
+                        ${h}
+                    </div>
+                `;
+
+            });
+
+
+            /*
+             * Empty spaces
+             */
+            for(
+                let i = 0;
+                i < firstDay;
+                i++
+            ) {
+
+                body.innerHTML += `
+                    <div></div>
+                `;
+
             }
+
+
+            /*
+             * Days
+             */
+            for(
+                let d = 1;
+                d <= daysInMonth;
+                d++
+            ) {
+
+                const dStr =
+                    `${year}-${String(
+                        month + 1
+                    ).padStart(2, '0')}-${String(
+                        d
+                    ).padStart(2, '0')}`;
+
+
+                const dayTasks =
+                    state.tasks.filter(
+                        t => t.date === dStr
+                    );
+
+
+                const hasMeeting =
+                    state.meetings.some(
+                        m => m.date === dStr
+                    );
+
+
+                const hasPending =
+                    dayTasks.some(
+                        t => !t.completed
+                    );
+
+
+                const hasCompleted =
+                    dayTasks.some(
+                        t => t.completed
+                    );
+
+
+                const today =
+                    new Date();
+
+
+                const isToday =
+                    d === today.getDate() &&
+                    month === today.getMonth() &&
+                    year === today.getFullYear();
+
+
+                let eventClass = '';
+
+
+                if(
+                    hasPending &&
+                    hasCompleted
+                ) {
+
+                    eventClass =
+                        'has-both';
+
+                }
+                else if(hasCompleted) {
+
+                    eventClass =
+                        'has-completed';
+
+                }
+                else if(
+                    hasPending ||
+                    hasMeeting
+                ) {
+
+                    eventClass =
+                        'has-pending';
+
+                }
+
+
+                body.innerHTML += `
+                    <div
+                        class="calendar-day ${
+                            isToday
+                                ? 'today'
+                                : ''
+                        } ${eventClass}"
+                        onclick="openDayModal('${dStr}')"
+                        title="${dayTasks.length} quest(s)"
+                    >
+                        ${d}
+                    </div>
+                `;
+
+            }
+
+
+            /*
+             * Display the Star Seeds
+             * belonging to this month.
+             */
+            const seeds =
+                getStarSeedsForMonth(
+                    monthKey
+                );
+
+
+            document.getElementById(
+                'calendar-star-history'
+            ).innerText =
+                `🌟 ${seeds} Star Seeds`;
+
         }
+
+
+        function changeCalendarMonth(direction) {
+
+            calendarViewDate =
+                new Date(
+                    calendarViewDate.getFullYear(),
+                    calendarViewDate.getMonth() +
+                        direction,
+                    1
+                );
+
+
+            renderCalendar();
+
+        }
+
+
+        function goToCurrentMonth() {
+
+            calendarViewDate =
+                new Date();
+
+
+            renderCalendar();
+
+        }
+
+
+        /* ==================================================
+           DAY MODAL
+        =================================================== */
 
         function openDayModal(date) {
-            document.getElementById('modal-overlay').style.display = 'block';
-            document.getElementById('day-modal').style.display = 'block';
-            document.getElementById('modal-date-title').innerText = `Moon Scroll: ${date}`;
-            const mtgs = state.meetings.filter(m => m.date === date);
-            const quests = state.tasks.filter(t => t.date === date);
-            const log = state.dailyLogs[date] || null;
-            let html = `<p style="font-weight:bold; color:var(--accent-color);">📅 Meetings:</p>`;
-            html += mtgs.length ? mtgs.map(m => `<div class="item-row">${m.title} @ ${m.time}</div>`).join('') : '<p>None scheduled.</p>';
-            html += `<p style="font-weight:bold; color:var(--accent-color); margin-top:10px;">✅ Quests:</p>`;
-            html += quests.length ? quests.map(t => `<div class="item-row">${t.text}</div>`).join('') : '<p>None scheduled.</p>';
-            if(log) html += `<div style="margin-top:15px; padding-top:10px; border-top:2px dashed pink;"><p>💎 Mood: ${log.mood}</p><p>💧 Mana: ${log.mana}ml</p></div>`;
-            document.getElementById('modal-content').innerHTML = html;
+
+            document.getElementById(
+                'modal-overlay'
+            ).style.display =
+                'block';
+
+
+            document.getElementById(
+                'day-modal'
+            ).style.display =
+                'block';
+
+
+            document.getElementById(
+                'modal-date-title'
+            ).innerText =
+                `Moon Scroll: ${date}`;
+
+
+            const mtgs =
+                state.meetings.filter(
+                    m => m.date === date
+                );
+
+
+            const quests =
+                state.tasks.filter(
+                    t => t.date === date
+                );
+
+
+            const log =
+                state.dailyLogs[date] ||
+                null;
+
+
+            let html = `
+                <p style="
+                    font-weight:bold;
+                    color:var(--accent-color);
+                ">
+                    📅 Meetings:
+                </p>
+            `;
+
+
+            html += mtgs.length
+
+                ? mtgs.map(m => `
+                    <div class="item-row">
+
+                        <span>
+
+                            📅
+                            <b>${escapeHTML(m.title)}</b>
+
+                            <br>
+
+                            <small>
+                                ⏰ ${m.time}
+                            </small>
+
+                        </span>
+
+                    </div>
+                `).join('')
+
+                : '<p>None scheduled.</p>';
+
+
+            html += `
+                <p style="
+                    font-weight:bold;
+                    color:var(--accent-color);
+                    margin-top:10px;
+                ">
+                    ✅ Quests:
+                </p>
+            `;
+
+
+            if(quests.length) {
+
+                html += quests.map(t => `
+
+                    <div class="
+                        item-row
+                        ${
+                            t.completed
+                                ? 'quest-completed'
+                                : ''
+                        }
+                    ">
+
+                        <span>
+
+                            ${
+                                t.completed
+                                    ? '🌟'
+                                    : '✨'
+                            }
+
+                            <b>
+                                ${escapeHTML(t.text)}
+                            </b>
+
+                            <br>
+
+                            <small>
+
+                                ${
+                                    t.completed
+
+                                        ? `Completed ${
+                                            t.completedAt
+                                                ? 'on ' +
+                                                  t.completedAt
+                                                : ''
+                                          }`
+
+                                        : '⏳ Pending'
+
+                                }
+
+                            </small>
+
+                        </span>
+
+                    </div>
+
+                `).join('');
+
+            }
+            else {
+
+                html +=
+                    '<p>None scheduled.</p>';
+
+            }
+
+
+            /*
+             * Daily log
+             */
+            if(log) {
+
+                html += `
+
+                    <div style="
+                        margin-top:15px;
+                        padding-top:10px;
+                        border-top:2px dashed pink;
+                    ">
+
+                        <p>
+                            💎 Mood:
+                            ${escapeHTML(log.mood)}
+                        </p>
+
+                        <p>
+                            💧 Mana:
+                            ${log.mana}ml
+                        </p>
+
+                    </div>
+
+                `;
+
+            }
+
+
+            document.getElementById(
+                'modal-content'
+            ).innerHTML =
+                html;
+
         }
+
+
+        function closeDayModal() {
+
+            document.getElementById(
+                'modal-overlay'
+            ).style.display =
+                'none';
+
+
+            document.getElementById(
+                'day-modal'
+            ).style.display =
+                'none';
+
+        }
+
+
+        /* ==================================================
+           DAILY LOG
+        =================================================== */
 
         function logMagicalDay() {
-            const today = new Date().toISOString().split('T')[0];
-            state.dailyLogs[today] = { mood: state.currentMood || "Neutral", mana: state.mana };
-            alert("Magical Energy logged! ✨"); saveData(); renderCalendar();
+
+            const today =
+                new Date()
+                    .toISOString()
+                    .split('T')[0];
+
+
+            state.dailyLogs[today] = {
+
+                mood:
+                    state.currentMood ||
+                    "Neutral",
+
+                mana:
+                    state.mana
+
+            };
+
+
+            alert(
+                "Magical Energy logged! ✨"
+            );
+
+
+            saveData();
+
+            renderCalendar();
+
         }
 
-        function closeDayModal() { document.getElementById('modal-overlay').style.display = 'none'; document.getElementById('day-modal').style.display = 'none'; }
 
-        // --- CORE QUESTS & MEETINGS ---
+        /* ==================================================
+           QUESTS
+        =================================================== */
+
         function addTask() {
-            const t = document.getElementById('newTaskText').value, d = document.getElementById('newTaskDate').value, p = document.getElementById('newTaskPrio').value;
+
+            const t =
+                document.getElementById(
+                    'newTaskText'
+                ).value;
+
+
+            const d =
+                document.getElementById(
+                    'newTaskDate'
+                ).value;
+
+
+            const p =
+                document.getElementById(
+                    'newTaskPrio'
+                ).value;
+
+
             if(!t) return;
-            state.tasks.push({ id: Date.now(), text: t, date: d, prio: p });
-            document.getElementById('newTaskText').value = ''; renderTasks(); renderCalendar(); saveData();
-        }
-        function renderTasks() {
-            document.getElementById('task-list').innerHTML = state.tasks.map(t => `<div class="item-row" style="border-left-color: ${t.prio === 'high' ? '#ff4d6d' : (t.prio === 'med' ? '#ffb703' : '#2ec4b6')}"><span><b>${t.text}</b><br><small>📅 ${t.date || 'No Date'}</small></span><button onclick="completeQuest(${t.id})" style="background:none; border:none; font-size:1.8rem;">🌟</button></div>`).join('');
-            document.getElementById('star-count').innerText = state.starSeeds;
-            updateRank();
-        }
-        function completeQuest(id) { state.tasks = state.tasks.filter(t => t.id !== id); state.starSeeds++; renderTasks(); renderCalendar(); saveData(); }
-        function updateRank() {
-            let r = "Novice Guardian", c = "#ffb3c6";
-            if(state.starSeeds >= 10) { r = "Crystal Scout"; c = "#b4e4ff"; }
-            if(state.starSeeds >= 30) { r = "Star Knight"; c = "#ffd56f"; }
-            if(state.starSeeds >= 50) { r = "Moon Princess"; c = "#cdb4ff"; }
-            const b = document.getElementById('rank-badge'); b.innerText = r; b.style.backgroundColor = c; b.style.boxShadow = `0 0 20px ${c}`;
-        }
-        function addMeeting() {
-            const t = document.getElementById('mtgTitle').value, d = document.getElementById('mtgDate').value, tm = document.getElementById('mtgTime').value;
-            if(!t || !d || !tm) return;
-            state.meetings.push({ title: t, date: d, time: tm, n15: false, nS: false });
-            document.getElementById('mtgTitle').value = ''; renderMeetings(); renderCalendar(); saveData();
-        }
-        function renderMeetings() {
-            document.getElementById('meeting-list').innerHTML = state.meetings.map((m, i) => `<div class="item-row"><span><b>${m.title}</b><br><small>${m.date} @ ${m.time}</small></span><button onclick="state.meetings.splice(${i},1); renderMeetings(); renderCalendar(); saveData();" style="background:none; border:none; color:red; font-size:1.5rem;">×</button></div>`).join('');
-        }
 
-        // --- VITALITY ---
-        function addMana() { state.mana = Math.min(2000, state.mana + 250); updateMana(); saveData(); }
-        function resetMana() { if(confirm("Reset Reservoir?")) { state.mana = 0; updateMana(); saveData(); } }
-        function updateMana() { document.getElementById('mana-fill').style.width = (state.mana / 2000 * 100) + "%"; document.getElementById('mana-text').innerText = state.mana + " / 2000ml"; }
-        function setMood(el, mood) { document.querySelectorAll('.gem').forEach(g => g.classList.remove('selected')); el.classList.add('selected'); state.currentMood = mood; saveData(); }
-        function getMoonPhase() {
-            const lp = 2551443, new_moon = new Date(1970, 0, 7, 20, 35, 0);
-            const phase = ((new Date().getTime() - new_moon.getTime()) / 1000) % lp;
-            const res_p = Math.floor(phase / (24 * 3600));
-            const icon = res_p === 0 ? "🌑" : res_p < 7 ? "🌒" : res_p === 7 ? "🌓" : res_p < 14 ? "🌔" : res_p === 14 ? "🌕" : res_p < 22 ? "🌖" : res_p === 22 ? "🌗" : "🌘";
-            const names = ["New Moon", "Waxing Crescent", "First Quarter", "Waxing Gibbous", "Full Moon", "Waning Gibbous", "Last Quarter", "Waning Crescent"];
-            document.getElementById('moon-icon').innerText = icon; document.getElementById('moon-phase-name').innerText = names[Math.min(res_p, 7)];
-        }
 
-        // --- ALERTS ---
-        setInterval(() => {
-            const now = new Date();
-            state.meetings.forEach(m => {
-                const md = new Date(`${m.date}T${m.time}`); const diff = (md - now) / 1000 / 60;
-                if (diff <= 15 && diff > 14 && !m.n15) { triggerAlert(m.title + " in 15m"); m.n15 = true; saveData(); }
-                if (diff <= 0 && diff > -1 && !m.nS) { triggerAlert(m.title + " is starting!"); m.nS = true; saveData(); }
+            state.tasks.push({
+
+                id:
+                    Date.now(),
+
+                text:
+                    t,
+
+                date:
+                    d,
+
+                prio:
+                    p,
+
+                completed:
+                    false,
+
+                completedAt:
+                    null
+
             });
-        }, 10000);
-        function triggerAlert(t) { document.getElementById('alert-heading').innerText = alertHeads[Math.floor(Math.random()*alertHeads.length)]; document.getElementById('alert-text').innerText = t; document.getElementById('alert-overlay').style.display = 'flex'; document.getElementById('notif-sound').play(); }
-        function closeAlert() { document.getElementById('alert-overlay').style.display = 'none'; document.getElementById('notif-sound').pause(); }
-        
-        // --- CONTROLS ---
-        function toggleDarkMode() { state.darkMode = !state.darkMode; document.body.classList.toggle('dark-mode'); saveData(); }
-        function downloadBackup() { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([localStorage.getItem('palace_os_vFinal_v2')], {type: 'text/json'})); a.download = 'palace_backup.json'; a.click(); }
-        function restoreBackup(e) { const r = new FileReader(); r.onload = (x) => { localStorage.setItem('palace_os_vFinal_v2', x.target.result); location.reload(); }; r.readAsText(e.target.files[0]); }
-        function clearData() { if(confirm("Erase all Palace memories?")) { localStorage.clear(); location.reload(); } }
 
-        // --- TIMER ---
-        let tSecs = 1500, tInt = null;
-        function toggleTimer() {
-            const b = document.getElementById('timer-btn');
-            if(tInt) { clearInterval(tInt); tInt = null; b.innerText = "Start"; }
-            else { b.innerText = "Pause"; tInt = setInterval(() => { tSecs--; updateT(); if(tSecs <= 0) { clearInterval(tInt); document.getElementById('notif-sound').play(); alert("Focus Time Over!"); } }, 1000); }
+
+            document.getElementById(
+                'newTaskText'
+            ).value =
+                '';
+
+
+            renderTasks();
+
+            renderCalendar();
+
+            saveData();
+
         }
-        function updateT() { document.getElementById('timer-display').innerText = `${Math.floor(tSecs/60)}:${(tSecs%60).toString().padStart(2,'0')}`; }
-        function resetTimer() { clearInterval(tInt); tInt = null; tSecs = 1500; updateT(); document.getElementById('timer-btn').innerText = "Start"; }
-        function setBreak(m) { tSecs = m * 60; updateT(); }
 
-        window.onload = loadData;
+
+        function renderTasks() {
+
+            document.getElementById(
+                'task-list'
+            ).innerHTML =
+
+                state.tasks.map(t => {
+
+                    const priorityColor =
+                        t.prio === 'high'
+
+                            ? '#ff4d6d'
+
+                            : t.prio === 'med'
+
+                                ? '#ffb703'
+
+                                : '#2ec4b6';
+
+
+                    return `
+
+                        <div
+                            class="
+                                item-row
+                                ${
+                                    t.completed
+                                        ? 'quest-completed'
+                                        : ''
+                                }
+                            "
+                            style="
+                                border-left-color:
+                                ${priorityColor};
+                            "
+                        >
+
+                            <span>
+
+                                <b>
+
+                                    ${
+                                        t.completed
+                                            ? '🌟 '
+                                            : '✨ '
+                                    }
+
+                                    ${escapeHTML(t.text)}
+
+                                </b>
+
+                                <br>
+
+                                <small>
+
+                                    📅
+                                    ${t.date || 'No Date'}
+
+                                    ${
+                                        t.completed
+
+                                            ? ' • ✅ Completed'
+
+                                            : ' • ⏳ Pending'
+
+                                    }
+
+                                </small>
+
+                            </span>
+
+
+                            <button
+
+                                onclick="
+                                    completeQuest(${t.id})
+                                "
+
+                                style="
+                                    background:none;
+                                    border:none;
+                                    font-size:1.8rem;
+                                "
+
+                                title="${
+                                    t.completed
+                                        ? 'Undo completion'
+                                        : 'Complete quest'
+                                }"
+
+                            >
+
+                                ${
+                                    t.completed
+                                        ? '✅'
+                                        : '🌟'
+                                }
+
+                            </button>
+
+                        </div>
+
+                    `;
+
+                }).join('');
+
+
+            document.getElementById(
+                'star-count'
+            ).innerText =
+                state.starSeeds;
+
+
+            updateRank();
+
+        }
+
+
+        function completeQuest(id) {
+
+            const task =
+                state.tasks.find(
+                    t => t.id === id
+                );
+
+
+            if(!task) return;
+
+
+            /*
+             * Undo completion
+             */
+            if(task.completed) {
+
+                task.completed =
+                    false;
+
+
+                task.completedAt =
+                    null;
+
+
+                state.starSeeds =
+                    Math.max(
+                        0,
+                        state.starSeeds - 1
+                    );
+
+            }
+
+            /*
+             * Complete quest
+             */
+            else {
+
+                task.completed =
+                    true;
+
+
+                task.completedAt =
+                    new Date()
+                        .toISOString()
+                        .split('T')[0];
+
+
+                state.starSeeds++;
+
+            }
+
+
+            /*
+             * Update current month's history.
+             */
+            const currentMonth =
+                getMonthKey(
+                    new Date()
+                );
+
+
+            state.monthlyStarSeeds[
+                currentMonth
+            ] =
+                state.starSeeds;
+
+
+            renderTasks();
+
+            renderCalendar();
+
+            saveData();
+
+        }
+
+
+        function updateRank() {
+
+            let r =
+                "Novice Guardian";
+
+
+            let c =
+                "#ffb3c6";
+
+
+            if(state.starSeeds >= 10) {
+
+                r =
+                    "Crystal Scout";
+
+                c =
+                    "#b4e4ff";
+
+            }
+
+
+            if(state.starSeeds >= 30) {
+
+                r =
+                    "Star Knight";
+
+                c =
+                    "#ffd56f";
+
+            }
+
+
+            if(state.starSeeds >= 50) {
+
+                r =
+                    "Moon Princess";
+
+                c =
+                    "#cdb4ff";
+
+            }
+
+
+            const b =
+                document.getElementById(
+                    'rank-badge'
+                );
+
+
+            b.innerText =
+                r;
+
+
+            b.style.backgroundColor =
+                c;
+
+
+            b.style.boxShadow =
+                `0 0 20px ${c}`;
+
+        }
+
+
+        /* ==================================================
+           MEETINGS
+        =================================================== */
+
+        function addMeeting() {
+
+            const t =
+                document.getElementById(
+                    'mtgTitle'
+                ).value;
+
+
+            const d =
+                document.getElementById(
+                    'mtgDate'
+                ).value;
+
+
+            const tm =
+                document.getElementById(
+                    'mtgTime'
+                ).value;
+
+
+            if(
+                !t ||
+                !d ||
+                !tm
+            ) return;
+
+
+            state.meetings.push({
+
+                title:
+                    t,
+
+                date:
+                    d,
+
+                time:
+                    tm,
+
+                n15:
+                    false,
+
+                nS:
+                    false
+
+            });
+
+
+            document.getElementById(
+                'mtgTitle'
+            ).value =
+                '';
+
+
+            renderMeetings();
+
+            renderCalendar();
+
+            saveData();
+
+        }
+
+
+        function renderMeetings() {
+
+            document.getElementById(
+                'meeting-list'
+            ).innerHTML =
+
+                state.meetings.map(
+                    (m, i) => `
+
+                        <div class="item-row">
+
+                            <span>
+
+                                <b>
+                                    ${escapeHTML(m.title)}
+                                </b>
+
+                                <br>
+
+                                <small>
+                                    ${m.date}
+                                    @
+                                    ${m.time}
+                                </small>
+
+                            </span>
+
+
+                            <button
+
+                                onclick="
+                                    deleteMeeting(${i})
+                                "
+
+                                style="
+                                    background:none;
+                                    border:none;
+                                    color:red;
+                                    font-size:1.5rem;
+                                "
+
+                            >
+                                ×
+                            </button>
+
+                        </div>
+
+                    `
+                ).join('');
+
+        }
+
+
+        function deleteMeeting(index) {
+
+            if(
+                !confirm(
+                    "Remove this meeting from the Palace?"
+                )
+            ) return;
+
+
+            state.meetings.splice(
+                index,
+                1
+            );
+
+
+            renderMeetings();
+
+            renderCalendar();
+
+            saveData();
+
+        }
+
+
+        /* ==================================================
+           VITALITY
+        =================================================== */
+
+        function addMana() {
+
+            state.mana =
+                Math.min(
+                    2000,
+                    state.mana + 250
+                );
+
+
+            updateMana();
+
+            saveData();
+
+        }
+
+
+        function resetMana() {
+
+            if(
+                confirm(
+                    "Reset Reservoir?"
+                )
+            ) {
+
+                state.mana =
+                    0;
+
+                updateMana();
+
+                saveData();
+
+            }
+
+        }
+
+
+        function updateMana() {
+
+            document.getElementById(
+                'mana-fill'
+            ).style.width =
+                (
+                    state.mana /
+                    2000 *
+                    100
+                ) + "%";
+
+
+            document.getElementById(
+                'mana-text'
+            ).innerText =
+                state.mana +
+                " / 2000ml";
+
+        }
+
+
+        function setMood(el, mood) {
+
+            document
+                .querySelectorAll('.gem')
+                .forEach(
+                    g =>
+                        g.classList.remove(
+                            'selected'
+                        )
+                );
+
+
+            el.classList.add(
+                'selected'
+            );
+
+
+            state.currentMood =
+                mood;
+
+
+            saveData();
+
+        }
+
+
+        /* ==================================================
+           MOON PHASE
+        =================================================== */
+
+        function getMoonPhase() {
+
+            const lp =
+                2551443;
+
+
+            const new_moon =
+                new Date(
+                    1970,
+                    0,
+                    7,
+                    20,
+                    35,
+                    0
+                );
+
+
+            const phase =
+                (
+                    (
+                        new Date().getTime() -
+                        new_moon.getTime()
+                    ) /
+                    1000
+                ) % lp;
+
+
+            const res_p =
+                Math.floor(
+                    phase /
+                    (
+                        24 *
+                        3600
+                    )
+                );
+
+
+            const icon =
+                res_p === 0
+                    ? "🌑"
+                    : res_p < 7
+                        ? "🌒"
+                        : res_p === 7
+                            ? "🌓"
+                            : res_p < 14
+                                ? "🌔"
+                                : res_p === 14
+                                    ? "🌕"
+                                    : res_p < 22
+                                        ? "🌖"
+                                        : res_p === 22
+                                            ? "🌗"
+                                            : "🌘";
+
+
+            const names = [
+
+                "New Moon",
+
+                "Waxing Crescent",
+
+                "First Quarter",
+
+                "Waxing Gibbous",
+
+                "Full Moon",
+
+                "Waning Gibbous",
+
+                "Last Quarter",
+
+                "Waning Crescent"
+
+            ];
+
+
+            document.getElementById(
+                'moon-icon'
+            ).innerText =
+                icon;
+
+
+            document.getElementById(
+                'moon-phase-name'
+            ).innerText =
+                names[
+                    Math.min(
+                        res_p,
+                        7
+                    )
+                ];
+
+        }
+
+
+        /* ==================================================
+           MEETING ALERTS
+        =================================================== */
+
+        setInterval(() => {
+
+            const now =
+                new Date();
+
+
+            state.meetings.forEach(m => {
+
+                const md =
+                    new Date(
+                        `${m.date}T${m.time}`
+                    );
+
+
+                const diff =
+                    (
+                        md - now
+                    ) /
+                    1000 /
+                    60;
+
+
+                if(
+                    diff <= 15 &&
+                    diff > 14 &&
+                    !m.n15
+                ) {
+
+                    triggerAlert(
+                        m.title +
+                        " in 15m"
+                    );
+
+
+                    m.n15 =
+                        true;
+
+
+                    saveData();
+
+                }
+
+
+                if(
+                    diff <= 0 &&
+                    diff > -1 &&
+                    !m.nS
+                ) {
+
+                    triggerAlert(
+                        m.title +
+                        " is starting!"
+                    );
+
+
+                    m.nS =
+                        true;
+
+
+                    saveData();
+
+                }
+
+            });
+
+        }, 10000);
+
+
+        function triggerAlert(t) {
+
+            document.getElementById(
+                'alert-heading'
+            ).innerText =
+
+                alertHeads[
+                    Math.floor(
+                        Math.random() *
+                        alertHeads.length
+                    )
+                ];
+
+
+            document.getElementById(
+                'alert-text'
+            ).innerText =
+                t;
+
+
+            document.getElementById(
+                'alert-overlay'
+            ).style.display =
+                'flex';
+
+
+            const sound =
+                document.getElementById(
+                    'notif-sound'
+                );
+
+
+            sound.currentTime =
+                0;
+
+
+            sound.play().catch(
+                () => {}
+            );
+
+        }
+
+
+        function closeAlert() {
+
+            document.getElementById(
+                'alert-overlay'
+            ).style.display =
+                'none';
+
+
+            const sound =
+                document.getElementById(
+                    'notif-sound'
+                );
+
+
+            sound.pause();
+
+        }
+
+
+        /* ==================================================
+           CONTROLS
+        =================================================== */
+
+        function toggleDarkMode() {
+
+            state.darkMode =
+                !state.darkMode;
+
+
+            document.body.classList.toggle(
+                'dark-mode'
+            );
+
+
+            saveData();
+
+        }
+
+
+        function downloadBackup() {
+
+            saveData();
+
+
+            const data =
+                localStorage.getItem(
+                    'palace_os_vFinal_v2'
+                );
+
+
+            const blob =
+                new Blob(
+                    [data],
+                    {
+                        type:
+                            'application/json'
+                    }
+                );
+
+
+            const a =
+                document.createElement(
+                    'a'
+                );
+
+
+            a.href =
+                URL.createObjectURL(
+                    blob
+                );
+
+
+            a.download =
+                'palace_backup.json';
+
+
+            a.click();
+
+
+            URL.revokeObjectURL(
+                a.href
+            );
+
+        }
+
+
+        function restoreBackup(e) {
+
+            const file =
+                e.target.files[0];
+
+
+            if(!file) return;
+
+
+            const r =
+                new FileReader();
+
+
+            r.onload =
+                (x) => {
+
+                    try {
+
+                        /*
+                         * Validate JSON before
+                         * replacing existing data.
+                         */
+                        JSON.parse(
+                            x.target.result
+                        );
+
+
+                        localStorage.setItem(
+                            'palace_os_vFinal_v2',
+                            x.target.result
+                        );
+
+
+                        location.reload();
+
+                    }
+
+                    catch(error) {
+
+                        alert(
+                            "The backup file is not valid."
+                        );
+
+                    }
+
+                };
+
+
+            r.readAsText(file);
+
+        }
+
+
+        function clearData() {
+
+            if(
+                confirm(
+                    "Erase all Palace memories?"
+                )
+            ) {
+
+                localStorage.clear();
+
+                location.reload();
+
+            }
+
+        }
+
+
+        /* ==================================================
+           TIMER
+        =================================================== */
+
+        let tSecs =
+            1500;
+
+
+        let tInt =
+            null;
+
+
+        function toggleTimer() {
+
+            const b =
+                document.getElementById(
+                    'timer-btn'
+                );
+
+
+            if(tInt) {
+
+                clearInterval(
+                    tInt
+                );
+
+
+                tInt =
+                    null;
+
+
+                b.innerText =
+                    "Start";
+
+            }
+
+            else {
+
+                b.innerText =
+                    "Pause";
+
+
+                tInt =
+                    setInterval(
+                        () => {
+
+                            tSecs--;
+
+                            updateT();
+
+
+                            if(
+                                tSecs <= 0
+                            ) {
+
+                                clearInterval(
+                                    tInt
+                                );
+
+
+                                tInt =
+                                    null;
+
+
+                                b.innerText =
+                                    "Start";
+
+
+                                const sound =
+                                    document.getElementById(
+                                        'notif-sound'
+                                    );
+
+
+                                sound.currentTime =
+                                    0;
+
+
+                                sound.play().catch(
+                                    () => {}
+                                );
+
+
+                                alert(
+                                    "Focus Time Over!"
+                                );
+
+                            }
+
+                        },
+                        1000
+                    );
+
+            }
+
+        }
+
+
+        function updateT() {
+
+            document.getElementById(
+                'timer-display'
+            ).innerText =
+
+                `${Math.floor(
+                    tSecs / 60
+                )}:${(
+                    tSecs % 60
+                ).toString().padStart(
+                    2,
+                    '0'
+                )}`;
+
+        }
+
+
+        function resetTimer() {
+
+            clearInterval(
+                tInt
+            );
+
+
+            tInt =
+                null;
+
+
+            tSecs =
+                1500;
+
+
+            updateT();
+
+
+            document.getElementById(
+                'timer-btn'
+            ).innerText =
+                "Start";
+
+        }
+
+
+        function setBreak(m) {
+
+            clearInterval(
+                tInt
+            );
+
+
+            tInt =
+                null;
+
+
+            tSecs =
+                m * 60;
+
+
+            updateT();
+
+
+            document.getElementById(
+                'timer-btn'
+            ).innerText =
+                "Start";
+
+        }
+
+
+        /* ==================================================
+           SECURITY / DISPLAY HELPER
+        =================================================== */
+
+        function escapeHTML(value) {
+
+            const div =
+                document.createElement(
+                    'div'
+                );
+
+
+            div.textContent =
+                value ?? '';
+
+
+            return div.innerHTML;
+
+        }
+
+
+        /* ==================================================
+           START APP
+        =================================================== */
+
+        window.onload =
+            loadData;
+
     </script>
+
 </body>
 </html>
+```
